@@ -39,6 +39,7 @@ List createList(void);
 void insertOrderTask();
 
 // Função para mover os cartões de To Do para Doing
+void moveDoing();
 
 // Função para alterar a pessoa responsável pela tarefa
 void changePerson();
