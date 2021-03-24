@@ -21,14 +21,14 @@ typedef struct{
     Date conclusion;
 } Card;
 
-typedef struct lnode* List;
+typedef struct lnode* List; 
 
 typedef struct lnode {
-    Card* card;
-    List next;
-    int size;
-    //int FLAG; // 1 -> To Do; 2 -> Doing; 3 -> Done
+    Card info; //Para conseguirmos manobrar melhor as listas temos de retirar o * porque senão não conseguimos mudar os elementos
+    List next; 
 } ListNode;
+
+
 
 #endif // DATA_H_INCLUDED
 
@@ -36,10 +36,10 @@ typedef struct lnode {
 List createList(void);//Feito
 
 // Funcão para inserir item ordenado
-void insertOrderTask(List lista, Card cartao);//Feito
+void insertOrderTask(List lista, Card info);//Feito
 
 //Função para procurar na lista
-void list_search(List lista, Card cartao, List &prev, List &next);
+void list_search(List lista, Card info, List *prev, List *atual);
 
 // Função para mover os cartões de To Do para Doing
 void moveDoing();
@@ -57,5 +57,5 @@ void reopenTask();
 void printBoard();
 
 // Função para visualizar tarefas por ordem de criação
-void printOrderedBoard();
+void printOrderedBoard(List lista);
 
