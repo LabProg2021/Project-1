@@ -42,4 +42,24 @@ void printOrderedBoard(List lista) {
         printf("%d ", print->info.id);
         print = print -> next;
     }
+    printf("\n");
+}
+
+void moveDoing(List lista1, List lista2, int id) {
+    List prev = lista1;
+    List atual = lista1 -> next;
+    Card move;
+
+    while((atual) != NULL && atual->info.id != id) {
+        prev = atual;
+        atual = atual -> next;
+    }
+
+    move = atual -> info;
+    //Eliminar na lista....
+    insertOrderTask(lista2, move);
+
+    if((atual) != NULL && (atual)->info.id != id) {
+        atual = NULL; //element not found;
+    }
 }
