@@ -5,8 +5,26 @@
 #include <stdlib.h>
 
 typedef struct {
+    short day;
+    short month;
+    short year;
+} Date;
+
+typedef struct {
+    // General: 
     int id;
-    char* title;
+    char* description;
+    Date* creation;
+
+    // toDoList Only
+    short* priority;
+    
+    // doingList Only
+    char* responsable;
+    Date* deadline;
+    
+    //doneList Only
+    Date* finish;
 } Card;
 
 typedef struct node Node;

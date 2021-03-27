@@ -2,10 +2,24 @@
 #include <stdlib.h>
 #include "data.h"
 
-Card* createCard(int id) {
+int ID = 1;
+
+void incrementID(int* IDPointer) {
+    *IDPointer = *IDPointer + 1; 
+}
+
+Card* createCard(char* description, short* priority) {
     Card* newCard = (Card*)malloc(sizeof(Card));
-    newCard->id = id;
-    newCard->title = NULL;
+    newCard->id          = ID;
+    newCard->description = description;
+    newCard->creation    = NULL;
+    newCard->priority    = priority;
+    newCard->responsable = NULL;
+    newCard->deadline    = NULL;
+    newCard->finish      = NULL;
+
+    incrementID(&ID);
+
     return newCard;
 }
 
@@ -47,4 +61,8 @@ void printList(List* l) {
     }
 
     printf("\n");
+}
+
+void sortList(List* l, int option) {
+
 }
