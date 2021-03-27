@@ -2,42 +2,63 @@
 #include <stdlib.h>
 #include "data.h"
 
-List createList(void) {
+List createList(int f) {
     List aux;
     aux = (List) malloc (sizeof (ListNode)); 
     if (aux != NULL) {
-        aux -> info; 
-        aux -> next = NULL; 
+        aux -> info = nullCard(); 
+        aux -> next = NULL;
+        aux -> flag = f;
     }
-return aux;
+    return aux;
 }
 
-void insertOrderTask(List lista, Card card) { //Falta Flag e o metódo search
+Card nullCard(void) {
+    Card card;
+    card.id = -1;
+    card.title = "";
+    card.person = "";
+    card.state = 0;
+    card.priority = 0;
+    card.creatDate.day = 0;
+    return card;
+}
+
+void insertOrderTask(List list, Card card) {
     List no;
-    List prev, atual;
+    List prev, subs;
     no = (List) malloc (sizeof(ListNode));
     if(no!=NULL) {
         no -> info = card;
-        list_search(lista, card, &prev, &atual);
+        listSearch(list, card, &prev, &subs);
         no -> next = prev -> next;
+        no -> flag = prev -> flag;
         prev -> next = no;
     }
 }
 
-void list_search(List lista, Card card, List *prev, List *atual) {
-    *prev = lista;
-    *atual = lista -> next;
-    while((*atual) != NULL && (*atual)->info.id < card.id) {
-        *prev = *atual;
-        *atual = (*atual)->next;
+void listSearch(List list, Card card, List *prev, List *subs) {
+    *prev = list;
+    *subs = list -> next;
+    if(list->flag == 1) {
+        while((*subs) != NULL && (*subs)->info.id < card.id) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        /*if((*subs) != NULL && (*subs)->info.id != card.id) {
+            *subs = NULL; //elemento não encontrado
+            printf("teste");
+        }*/
+    } else if(list->flag == 2) {
+        //ordenar por person
+    } else {
+        //ordenar por conclusion
     }
-    if((*atual) != NULL && (*atual)->info.id != card.id) {
-        *atual = NULL; //element not found;
-    }
+    
 }   
 
-void printOrderedBoard(List lista) {
-    List print = lista -> next;
+void printTeste(List list) {
+    List print = list -> next;
     while(print) {
         printf("%d ", print->info.id);
         print = print -> next;
@@ -45,21 +66,32 @@ void printOrderedBoard(List lista) {
     printf("\n");
 }
 
-void moveDoing(List lista1, List lista2, int id) {
-    List prev = lista1;
-    List atual = lista1 -> next;
-    Card move;
+void moveToList(List listO, List listD, int id) {
+    List temp = listO -> next;
 
-    while((atual) != NULL && atual->info.id != id) {
-        prev = atual;
-        atual = atual -> next;
+    while((temp) != NULL && temp->info.id != id) {
+        temp = temp -> next;
+    }
+    /*if((temp) != NULL && temp->info.id != id) {
+        temp = NULL; //elemento não encontrado
+    }*/
+
+    List trash = deleteFromList(listO, id); //Remove elemento da lista de origem e retorna o mesmo
+    insertOrderTask(listD, temp->info);     //Insere elemento na lista de destino
+    free(trash);                            //Liberta a memória do elemento eliminado
+}
+
+List deleteFromList(List prev, int id) {
+    List subs = prev -> next;
+
+    while((subs) != NULL && subs->info.id != id) {
+        prev = subs;
+        subs = subs -> next;
     }
 
-    move = atual -> info;
-    //Eliminar na lista....
-    insertOrderTask(lista2, move);
+    if(subs == NULL) return subs; //Se o cartão não estiver na lista retorna NULL
 
-    if((atual) != NULL && (atual)->info.id != id) {
-        atual = NULL; //element not found;
-    }
+    prev -> next = subs -> next;
+
+    return subs;
 }
