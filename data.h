@@ -49,7 +49,7 @@ void listSearch(List list, Card card, List *prev, List *atual);
 void moveToList(List listO, List listD, int id);
 
 // Função para eliminar elemento de uma lista
-List deleteFromList(List list, int id);
+void deleteFromList(List list, int id);
 
 // Função para alterar a pessoa responsável pela tarefa
 void changePerson();

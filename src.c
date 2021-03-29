@@ -76,12 +76,11 @@ void moveToList(List listO, List listD, int id) {
         temp = NULL; //elemento não encontrado
     }*/
 
-    List trash = deleteFromList(listO, id); //Remove elemento da lista de origem e retorna o mesmo
     insertOrderTask(listD, temp->info);     //Insere elemento na lista de destino
-    free(trash);                            //Liberta a memória do elemento eliminado
+    deleteFromList(listO, id);              //Remove elemento da lista de origem e retorna o mesmo
 }
 
-List deleteFromList(List prev, int id) {
+void deleteFromList(List prev, int id) {
     List subs = prev -> next;
 
     while((subs) != NULL && subs->info.id != id) {
@@ -89,9 +88,9 @@ List deleteFromList(List prev, int id) {
         subs = subs -> next;
     }
 
-    if(subs == NULL) return subs; //Se o cartão não estiver na lista retorna NULL
+    if(subs == NULL) return;   //Se o cartão não estiver na lista retorna NULL
 
     prev -> next = subs -> next;
 
-    return subs;
+    free(subs);               //Liberta a memória do elemento eliminado
 }
