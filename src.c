@@ -77,7 +77,7 @@ void moveToList(List listO, List listD, int id) {
     }*/
 
     insertOrderTask(listD, temp->info);     //Insere elemento na lista de destino
-    deleteFromList(listO, id);              //Remove elemento da lista de origem e retorna o mesmo
+    deleteFromList(listO, id);              //Remove elemento da lista de origem
 }
 
 void deleteFromList(List prev, int id) {
