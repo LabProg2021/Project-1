@@ -6,16 +6,30 @@
 
 int ID = 0;
 
-Card* createCard(char* description, short priority, char* person) {
-    Card* newCard = (Card*) malloc(sizeof(Card));
+Date createDate(short year, short month, short day) {
+    Date newDate;
 
-    newCard->id          = ID;
-    //newCard->createDate  = createDate;
-    newCard->description = description;
-    newCard->priority    = priority;
-    newCard->person      = person;
-    //newCard->deadline    = deadline;
-    //newCard->concluDate  = concluDate;
+    newDate.year  = year;
+    newDate.month = month;
+    newDate.day   = day;
+
+    return newDate;
+}
+
+Card createCard(char* description, short priority, char* person, Date* deadline, Date* concluDate) {
+    Card newCard;
+
+    time_t t = time(NULL);
+    struct tm time = *localtime(&t);
+    Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday); //Cria data autal
+
+    newCard.id           = ID;
+    newCard.creationDate = curDate;
+    newCard.description  = description;
+    newCard.priority     = priority;
+    newCard.person       = person;
+    newCard.deadline     = *deadline;
+    newCard.concluDate   = *concluDate;
 
     ID++;
     return newCard;
@@ -49,30 +63,36 @@ void insertNode(List list, Card* card) {
 void listSearch(List list, Card* card, List *prev, List *subs) {
     *prev = list;
     *subs = list -> next;
-    if(list->flag == 1) {
-        while((*subs) != NULL && (*subs)->info->id < card->id) {
+    if(list->flag == 1) {             //se for a lista toDo, ordenar por prioridade
+        while((*subs) != NULL && (*subs)->info->priority < card->priority) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-        /*if((*subs) != NULL && (*subs)->info->id != card.id) {
-            *subs = NULL; //elemento não encontrado
-            printf("teste");
-        }*/
-    } else if(list->flag == 2) {
-        //ordenar por person
-    } else {
-        //ordenar por conclusion
+    } else if(list->flag == 2) {      //se for a lista doing, ordenar pela pessoa responsável
+        int i = 0;
+        while((*subs) != NULL && (*subs)->info->person[i] != '\0') {
+            while((*subs) != NULL && (*subs)->info->person[i] < card->person[i]) {
+                *prev = *subs;
+                *subs = (*subs)->next;
+            }
+            if((*prev)->info->person[i] == card->person[i]) i++;
+            else break;
+        }
+    } else {                          //se for a lista done, ordenar pela data de conclusão
+        while((*subs) != NULL && (*subs)->info->concluDate.year > card->concluDate.year) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->concluDate.month > card->concluDate.month) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->concluDate.day > card->concluDate.day) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
     }
     
-}   
-
-void printTeste(List list) {
-    List print = list -> next;
-    while(print) {
-        printf("%d ", print->info->id);
-        print = print -> next;
-    }
-    printf("\n");
 }
 
 void moveToList(List listO, List listD, int id) {
@@ -104,21 +124,14 @@ void deleteFromList(List prev, int id) {
     free(subs);               //Liberta a memória do elemento eliminado
 }
 
-void printPerson(List toDo, List doing, List done, char* person) {
+void printByPerson(List toDo, List doing, List done, char* person) {
     List find = createList(1);
-    
+
     while((toDo->next) != NULL) {
         if(strcmp(toDo->next->info->person, person)==0) {
             insertNode(find, toDo->next->info);
         }
         toDo->next = toDo->next->next;
-    }
-
-    while((doing->next) != NULL) {
-        if(strcmp(doing->next->info->person, person)==0) {
-            insertNode(find, doing->next->info);
-        }
-        doing->next = doing->next->next;
     }
 
     while((doing->next) != NULL) {
@@ -135,4 +148,15 @@ void printPerson(List toDo, List doing, List done, char* person) {
         done->next = done->next->next;
     }
     printTeste(find);
+}
+
+void printTeste(List list) {
+    List printID = list -> next;
+    printf("ID: ");
+    while(printID) {
+        printf("%d ", printID->info->id);
+        printID = printID -> next;
+    }
+    printf("\n");
+    printf("\n");
 }

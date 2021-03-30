@@ -5,15 +5,15 @@
 #include <stdlib.h>
 
 typedef struct{
-int day;
-int month;
-int year;
+    short day;
+    short month;
+    short year;
 } Date;
 
 typedef struct{
     //Geral
     int id;
-    Date creatDate;
+    Date creationDate;
     char* description;
 
     //toDo list
@@ -37,8 +37,11 @@ typedef struct lnode {
 
 #endif // DATA_H_INCLUDED
 
+//Função para criar uma data
+Date createDate(short year, short month, short day);
+
 // Função para criar um cartão
-Card* createCard(char* description, short priority, char* person);
+Card createCard(char* description, short priority, char* person, Date* deadline, Date* concluDate);
 
 // Função para criar uma lista
 List createList(short f);
@@ -62,10 +65,10 @@ void changePerson();
 void printBoard(List toDo, List doing, List done);
 
 // Função para visualizar tarefas por ordem de criação
-void printOrderedBoard(List toDo, List doing, List done);
+void printByCreation(List toDo, List doing, List done);
+
+//Função para visualizar tarefas de uma pessoa
+void printByPerson(List toDo, List doing, List done, char* person);
 
 //Função de teste para imprimir uma lista
 void printTeste(List list);
-
-//Função para procurar tarefas por pessoa
-void printPerson(List toDo, List doing, List done, char* person);
