@@ -1,30 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "data.h"
 
-List createList(int f) {
+int ID = 0;
+
+Card* createCard(char* description, short priority, char* person) {
+    Card* newCard = (Card*) malloc(sizeof(Card));
+
+    newCard->id          = ID;
+    //newCard->createDate  = createDate;
+    newCard->description = description;
+    newCard->priority    = priority;
+    newCard->person      = person;
+    //newCard->deadline    = deadline;
+    //newCard->concluDate  = concluDate;
+
+    ID++;
+    return newCard;
+}
+
+List createList(short f) {
+    Card card;
     List aux;
     aux = (List) malloc (sizeof (ListNode)); 
     if (aux != NULL) {
-        aux -> info = nullCard(); 
+        aux -> info = &card; 
         aux -> next = NULL;
         aux -> flag = f;
     }
     return aux;
 }
 
-Card nullCard(void) {
-    Card card;
-    card.id = -1;
-    card.title = "";
-    card.person = "";
-    card.state = 0;
-    card.priority = 0;
-    card.creatDate.day = 0;
-    return card;
-}
-
-void insertOrderTask(List list, Card card) {
+void insertNode(List list, Card* card) {
     List no;
     List prev, subs;
     no = (List) malloc (sizeof(ListNode));
@@ -37,15 +45,15 @@ void insertOrderTask(List list, Card card) {
     }
 }
 
-void listSearch(List list, Card card, List *prev, List *subs) {
+void listSearch(List list, Card* card, List *prev, List *subs) {
     *prev = list;
     *subs = list -> next;
     if(list->flag == 1) {
-        while((*subs) != NULL && (*subs)->info.id < card.id) {
+        while((*subs) != NULL && (*subs)->info->id < card->id) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-        /*if((*subs) != NULL && (*subs)->info.id != card.id) {
+        /*if((*subs) != NULL && (*subs)->info->id != card.id) {
             *subs = NULL; //elemento não encontrado
             printf("teste");
         }*/
@@ -60,7 +68,7 @@ void listSearch(List list, Card card, List *prev, List *subs) {
 void printTeste(List list) {
     List print = list -> next;
     while(print) {
-        printf("%d ", print->info.id);
+        printf("%d ", print->info->id);
         print = print -> next;
     }
     printf("\n");
@@ -69,21 +77,21 @@ void printTeste(List list) {
 void moveToList(List listO, List listD, int id) {
     List temp = listO -> next;
 
-    while((temp) != NULL && temp->info.id != id) {
+    while((temp) != NULL && temp->info->id != id) {
         temp = temp -> next;
     }
     /*if((temp) != NULL && temp->info.id != id) {
         temp = NULL; //elemento não encontrado
     }*/
 
-    insertOrderTask(listD, temp->info);     //Insere elemento na lista de destino
-    deleteFromList(listO, id);              //Remove elemento da lista de origem
+    insertNode(listD, temp->info); //Insere elemento na lista de destino
+    deleteFromList(listO, id);     //Remove elemento da lista de origem
 }
 
 void deleteFromList(List prev, int id) {
     List subs = prev -> next;
 
-    while((subs) != NULL && subs->info.id != id) {
+    while((subs) != NULL && subs->info->id != id) {
         prev = subs;
         subs = subs -> next;
     }

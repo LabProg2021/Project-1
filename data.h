@@ -11,39 +11,43 @@ int year;
 } Date;
 
 typedef struct{
+    //Geral
     int id;
     Date creatDate;
-    char* title;
+    char* description;
+
+    //toDo list
+    short priority;
+
+    //doing list
     char* person;
-    int state;
-    int priority;
     Date deadline;
-    Date conclusion;
+
+    //done list
+    Date concluDate;
 } Card;
 
 typedef struct lnode* List; 
 
 typedef struct lnode {
-    Card info; //Para conseguirmos manobrar melhor as listas temos de retirar o * porque senão não conseguimos mudar os elementos
+    Card* info;
     List next;
-    int flag;
+    short flag;
 } ListNode;
-
-
 
 #endif // DATA_H_INCLUDED
 
-// Função que cria uma lista
-List createList(int f);
+// Função para criar um cartão
+Card* createCard(char* description, short priority, char* person);
 
-// Função que cria um cartão nulo
-Card nullCard(void);
+// Função para criar uma lista
+List createList(short f);
 
 // Funcão para inserir item ordenado
-void insertOrderTask(List list, Card card);
+void insertNode(List list, Card* card);
 
 //Função que procura um cartão na lista
-void listSearch(List list, Card card, List *prev, List *atual);
+void listSearch(List list, Card* card, List *prev, List *atual);
 
 // Função para mover os cartões entre listas
 void moveToList(List listO, List listD, int id);
@@ -53,12 +57,6 @@ void deleteFromList(List list, int id);
 
 // Função para alterar a pessoa responsável pela tarefa
 void changePerson();
-
-/*// Função para fechar a tarefa
-void closeTask();*/
-
-/*// Função para reabrir a tarefa
-void reopenTask();*/
 
 // Função para visualizar o quadro
 void printBoard(List toDo, List doing, List done);
