@@ -68,19 +68,18 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-        if((*subs) != NULL && (*subs)->info->priority == card->priority) {
-            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.year > card->creationDate.year) {
-                *prev = *subs;
-                *subs = (*subs)->next;
-            }
-            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.month > card->creationDate.month) {
-                *prev = *subs;
-                *subs = (*subs)->next;
-            }
-            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.day > card->creationDate.day) {
-                *prev = *subs;
-                *subs = (*subs)->next;
-            }          
+        // se a prioridade for igual:
+        while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.year > card->creationDate.year) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.month > card->creationDate.month) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.day > card->creationDate.day) {
+            *prev = *subs;
+            *subs = (*subs)->next;
         }
     } else if(list->flag == 2) {      //se for a lista doing, ordenar pela pessoa responsável
         int i = 0;
