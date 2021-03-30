@@ -15,10 +15,10 @@ int main(int argc, char const *argv[]) {
     Date nullDate;
 
     cartao0 = createCard("Teste 1", 1, "Pedro", &date1, &nullDate);
-    cartao1 = createCard("Teste 2", 4, "Manuel", &date1, &nullDate);
+    cartao1 = createCard("Teste 2", 5, "Manuel", &date2, &nullDate);
     cartao2 = createCard("Teste 3", 10, "António", &date1, &nullDate);
-    cartao3 = createCard("Teste 4", 7, "Abc", &date1, &nullDate);
-    cartao4 = createCard("Teste 5", 5, "Pedro", &date1, &nullDate);
+    cartao3 = createCard("Teste 4", 5, "Abc", &date1, &nullDate);
+    cartao4 = createCard("Teste 5", 5, "Pedro", &date3, &nullDate);
     cartaoDone1 = createCard("Important Task", 10, "Hugo", &date1, &date3);
     cartaoDone2 = createCard("Important Task", 7, "Pedro", &date1, &date2);
     cartaoDone3 = createCard("Important Task", 8, "José", &date1, &date1);

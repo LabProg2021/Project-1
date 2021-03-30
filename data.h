@@ -64,7 +64,7 @@ void changePerson();
 // Função para visualizar o quadro
 void printBoard(List toDo, List doing, List done);
 
-// Função para visualizar tarefas por ordem de criação
+// Função para visualizar tarefas por data de criação
 void printByCreation(List toDo, List doing, List done);
 
 //Função para visualizar tarefas de uma pessoa

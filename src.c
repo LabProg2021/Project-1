@@ -63,10 +63,24 @@ void insertNode(List list, Card* card) {
 void listSearch(List list, Card* card, List *prev, List *subs) {
     *prev = list;
     *subs = list -> next;
-    if(list->flag == 1) {             //se for a lista toDo, ordenar por prioridade
+    if(list->flag == 1) {             //se for a lista toDo, ordenar por prioridade, se fore igual ordenar por data de criação
         while((*subs) != NULL && (*subs)->info->priority < card->priority) {
             *prev = *subs;
             *subs = (*subs)->next;
+        }
+        if((*subs) != NULL && (*subs)->info->priority == card->priority) {
+            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.year > card->creationDate.year) {
+                *prev = *subs;
+                *subs = (*subs)->next;
+            }
+            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.month > card->creationDate.month) {
+                *prev = *subs;
+                *subs = (*subs)->next;
+            }
+            while((*subs) != NULL && (*subs)->info->priority == card->priority && (*subs)->info->creationDate.day > card->creationDate.day) {
+                *prev = *subs;
+                *subs = (*subs)->next;
+            }          
         }
     } else if(list->flag == 2) {      //se for a lista doing, ordenar pela pessoa responsável
         int i = 0;
@@ -75,7 +89,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
                 *prev = *subs;
                 *subs = (*subs)->next;
             }
-            if((*prev)->info->person[i] == card->person[i]) i++;
+            if((*subs) != NULL && (*subs)->info->person[i] == card->person[i]) i++;
             else break;
         }
     } else {                          //se for a lista done, ordenar pela data de conclusão
