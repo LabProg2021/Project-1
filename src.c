@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "data.h"
 
 int ID = 0;
@@ -101,4 +102,37 @@ void deleteFromList(List prev, int id) {
     prev -> next = subs -> next;
 
     free(subs);               //Liberta a memória do elemento eliminado
+}
+
+void printPerson(List toDo, List doing, List done, char* person) {
+    List find = createList(1);
+    
+    while((toDo->next) != NULL) {
+        if(strcmp(toDo->next->info->person, person)==0) {
+            insertNode(find, toDo->next->info);
+        }
+        toDo->next = toDo->next->next;
+    }
+
+    while((doing->next) != NULL) {
+        if(strcmp(doing->next->info->person, person)==0) {
+            insertNode(find, doing->next->info);
+        }
+        doing->next = doing->next->next;
+    }
+
+    while((doing->next) != NULL) {
+        if(strcmp(doing->next->info->person, person)==0) {
+            insertNode(find, doing->next->info);
+        }
+        doing->next = doing->next->next;
+    }
+
+    while((done->next) != NULL) {
+        if(strcmp(done->next->info->person, person)==0) {
+            insertNode(find, done->next->info);
+        }
+        done->next = done->next->next;
+    }
+    printTeste(find);
 }

@@ -66,3 +66,6 @@ void printOrderedBoard(List toDo, List doing, List done);
 
 //Função de teste para imprimir uma lista
 void printTeste(List list);
+
+//Função para procurar tarefas por pessoa
+void printPerson(List toDo, List doing, List done, char* person);
