@@ -46,6 +46,9 @@ Card createCard(char* description, short priority, char* person, Date* deadline,
 // Função para criar uma lista
 List createList(short f);
 
+// Função para eliminar uma lista
+void deleteList(List trash);
+
 // Funcão para inserir item ordenado
 void insertNode(List list, Card* card);
 

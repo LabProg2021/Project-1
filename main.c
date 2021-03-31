@@ -47,6 +47,10 @@ int main(int argc, char const *argv[]) {
     printTeste(done);
     printf("Ordenado por pessoa: \n");
     printByPerson(toDo, doing, done, "Pedro");
+    printf("toDo List:\n");
+    printTeste(toDo);
+    printf("done List:\n");
+    printTeste(done);
 
     return 0;
 }

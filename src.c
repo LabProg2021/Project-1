@@ -48,15 +48,15 @@ List createList(short f) {
 }
 
 void insertNode(List list, Card* card) {
-    List no;
-    List prev, subs;
-    no = (List) malloc (sizeof(ListNode));
-    if(no!=NULL) {
-        no -> info = card;
+    List l;
+    List prev, subs;  //previous, subsequent
+    l = (List) malloc (sizeof(ListNode));
+    if(l!=NULL) {
+        l -> info = card;
         listSearch(list, card, &prev, &subs);
-        no -> next = prev -> next;
-        no -> flag = prev -> flag;
-        prev -> next = no;
+        l -> next = prev -> next;
+        l -> flag = prev -> flag;
+        prev -> next = l;
     }
 }
 
@@ -137,8 +137,19 @@ void deleteFromList(List prev, int id) {
     free(subs);               //Liberta a memória do elemento eliminado
 }
 
+void deleteList(List trash) {
+    List subs;
+
+    while(trash != NULL) {
+        subs = trash->next;
+        free(trash);
+        trash = subs;
+    }
+}
+
 void printByPerson(List toDo, List doing, List done, char* person) {
     List find = createList(1);
+    ListNode temp = *(toDo);
 
     while((toDo->next) != NULL) {
         if(strcmp(toDo->next->info->person, person)==0) {
@@ -146,21 +157,28 @@ void printByPerson(List toDo, List doing, List done, char* person) {
         }
         toDo->next = toDo->next->next;
     }
+    toDo->next = temp.next;
 
+    temp = *(doing);
     while((doing->next) != NULL) {
         if(strcmp(doing->next->info->person, person)==0) {
             insertNode(find, doing->next->info);
         }
         doing->next = doing->next->next;
     }
+    doing->next = temp.next;
 
+    temp = *(done);
     while((done->next) != NULL) {
         if(strcmp(done->next->info->person, person)==0) {
             insertNode(find, done->next->info);
         }
         done->next = done->next->next;
     }
+    done->next = temp.next;
+
     printTeste(find);
+    deleteList(find);
 }
 
 void printTeste(List list) {
