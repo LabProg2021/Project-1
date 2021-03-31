@@ -75,3 +75,5 @@ void printByPerson(List toDo, List doing, List done, char* person);
 
 //Função de teste para imprimir uma lista
 void printTeste(List list);
+
+void printDates(List toDo, List doing, List done);
