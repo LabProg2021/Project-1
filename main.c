@@ -51,6 +51,12 @@ int main(int argc, char const *argv[]) {
     printTeste(toDo);
     printf("done List:\n");
     printTeste(done);
-
+    printf("Ordenado por datas: \n");
+    printDates(toDo, doing, done);
+    printf("toDo List:\n");
+    printTeste(toDo);
+    printf("done List:\n");
+    printTeste(done);
+    
     return 0;
 }

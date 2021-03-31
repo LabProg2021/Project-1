@@ -91,7 +91,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             if((*subs) != NULL && (*subs)->info->person[i] == card->person[i]) i++;
             else break;
         }
-    } else {                          //se for a lista done, ordenar pela data de conclusão
+    } else if(list->flag == 3) {                          //se for a lista done, ordenar pela data de conclusão
         while((*subs) != NULL && (*subs)->info->concluDate.year > card->concluDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
@@ -104,8 +104,20 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    }
-    
+    } else{
+         while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->creationDate.month > card->creationDate.month) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+        while((*subs) != NULL && (*subs)->info->creationDate.day > card->creationDate.day) {
+            *prev = *subs;
+            *subs = (*subs)->next;
+        }
+    } 
 }
 
 void moveToList(List listO, List listD, int id) {
@@ -190,4 +202,28 @@ void printTeste(List list) {
     }
     printf("\n");
     printf("\n");
+}
+
+void printDates(List toDo, List doing, List done) {
+    List dates = createList(4);
+    ListNode temp = *(toDo);
+    while((toDo->next) != NULL) {
+        insertNode(dates, toDo->next->info);
+        toDo->next = toDo->next->next;
+     }
+    toDo->next = temp.next;
+    temp = *(doing);
+    while((doing->next) != NULL) {
+        insertNode(dates, doing->next->info);
+        doing->next = doing->next->next;
+     }
+    toDo->next = temp.next;
+    temp = *(done);
+    while((done->next) != NULL) {
+        insertNode(dates, done->next->info);
+        done->next = done->next->next;
+     }
+    done->next = temp.next;    
+    printTeste(dates);
+    deleteList(dates);
 }
