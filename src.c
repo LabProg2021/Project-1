@@ -64,7 +64,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
     *prev = list;
     *subs = list -> next;
     if(list->flag == 1) {             //se for a lista toDo, ordenar por prioridade, se fore igual ordenar por data de criação
-        while((*subs) != NULL && (*subs)->info->priority < card->priority) {
+        while((*subs) != NULL && (*subs)->info->priority > card->priority) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
