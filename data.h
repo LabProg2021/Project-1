@@ -78,3 +78,8 @@ void printByDate(List toDo, List doing, List done);
 
 //Função de teste para imprimir uma lista
 void printTeste(List list);
+ 
+//Função para guardar no ficheiro as alterações
+void saveFile(List toDo, List doing, List done);
+
+void readFile(List toDo, List doing, List done);

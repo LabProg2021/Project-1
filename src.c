@@ -221,3 +221,55 @@ void printTeste(List list) {
     printf("\n");
     printf("\n");
 }
+
+void saveFile(List toDo, List doing, List done) {
+    FILE *fp;
+    fp = fopen("cartoes.txt", "wb");
+    if(fp==NULL) {printf("Ficheiro não encontrado\n");
+    }
+    else {
+        ListNode temp = *(toDo);
+        while(toDo->next != NULL) {
+            fprintf(fp, "%d\n", toDo->next->info->id);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->creationDate.day,toDo->next->info->creationDate.month, toDo->next->info->creationDate.year);
+            fprintf(fp, "%s\n", toDo->next->info->description);
+            fprintf(fp, "%d\n", toDo->next->info->priority);
+            fprintf(fp, "%s\n", toDo->next->info->person);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->deadline.day,toDo->next->info->deadline.month, toDo->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->concluDate.day,toDo->next->info->concluDate.month, toDo->next->info->concluDate.year);
+            fprintf(fp, "%d\n", toDo->flag);
+            fprintf(fp, "\n");
+            toDo->next = toDo->next->next;
+        }
+        toDo->next = temp.next;
+        temp = *(doing);
+        while(doing->next != NULL) {
+            fprintf(fp, "%d\n", doing->next->info->id);
+            fprintf(fp, "%d %d %d\n", doing->next->info->creationDate.day,doing->next->info->creationDate.month, doing->next->info->creationDate.year);
+            fprintf(fp, "%s\n", doing->next->info->description);
+            fprintf(fp, "%d\n", doing->next->info->priority);
+            fprintf(fp, "%s\n", doing->next->info->person);
+            fprintf(fp, "%d %d %d\n", doing->next->info->deadline.day, doing->next->info->deadline.month, doing->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", doing->next->info->concluDate.day,doing->next->info->concluDate.month, doing->next->info->concluDate.year);
+            fprintf(fp, "%d\n", doing->flag);
+            fprintf(fp, "\n");
+            doing->next = doing->next->next;
+        }
+        doing->next = temp.next;
+        temp = *(done);
+        while(done->next != NULL) {
+            fprintf(fp, "%d\n", done->next->info->id);
+            fprintf(fp, "%d %d %d\n", done->next->info->creationDate.day, done->next->info->creationDate.month, done->next->info->creationDate.year);
+            fprintf(fp, "%s\n", done->next->info->description);
+            fprintf(fp, "%d\n", done->next->info->priority);
+            fprintf(fp, "%s\n", done->next->info->person);
+            fprintf(fp, "%d %d %d\n", done->next->info->deadline.day, done->next->info->deadline.month, done->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", done->next->info->concluDate.day,done->next->info->concluDate.month, done->next->info->concluDate.year);
+            fprintf(fp, "%d\n", done->flag);
+            fprintf(fp, "\n");
+            done->next = done->next->next;
+        }
+        done->next = temp.next;
+    }
+    fclose(fp);
+}

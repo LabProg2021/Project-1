@@ -57,6 +57,8 @@ int main(int argc, char const *argv[]) {
     printf("%s\n", cartao1.person);
     printf("doing List:\n");
     printTeste(doing);
-    
+    saveFile(toDo, doing, done);
+    changePerson(doing, &cartao1, "Edgar");
+    saveFile(toDo, doing, done);
     return 0;
 }
