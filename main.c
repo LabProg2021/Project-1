@@ -23,8 +23,6 @@ int main(int argc, char const *argv[]) {
     cartaoDone2 = createCard("Important Task", 7, "Pedro", &date1, &date2);
     cartaoDone3 = createCard("Important Task", 8, "José", &date1, &date1);
 
-    //printf("%d\n", cartao1.creationDate.year);
-
     insertNode(toDo, &cartao0);
     insertNode(toDo, &cartao1);
     insertNode(toDo, &cartao2);
@@ -32,9 +30,9 @@ int main(int argc, char const *argv[]) {
     insertNode(toDo, &cartao4);
     printf("toDo List:\n");
     printTeste(toDo);
-    moveToList(toDo, doing, 2);
-    moveToList(toDo, doing, 3);
-    moveToList(toDo, doing, 1);
+    moveToList(toDo, doing, &cartao2);
+    moveToList(toDo, doing, &cartao3);
+    moveToList(toDo, doing, &cartao1);
     insertNode(done, &cartaoDone1);
     insertNode(done, &cartaoDone2);
     insertNode(done, &cartaoDone3);
@@ -42,21 +40,27 @@ int main(int argc, char const *argv[]) {
     printTeste(toDo);
     printf("doing List:\n");
     printTeste(doing);
-    //printf("%c\n", doing->next->info->person[0]);
     printf("done List:\n");
     printTeste(done);
     printf("Ordenado por pessoa: \n");
     printByPerson(toDo, doing, done, "Pedro");
-    printf("toDo List:\n");
-    printTeste(toDo);
-    printf("done List:\n");
-    printTeste(done);
+    printf("doing List:\n");
+    printTeste(doing);
     printf("Ordenado por datas: \n");
-    printDates(toDo, doing, done);
+    printByDate(toDo, doing, done);
+    printf("doing List:\n");
+    printTeste(doing);
     printf("toDo List:\n");
     printTeste(toDo);
     printf("done List:\n");
     printTeste(done);
+    printf("doing List:\n");
+    printTeste(doing);
+    printf("%s -> ", cartao1.person);
+    changePerson(doing, &cartao1, "Ana");
+    printf("%s\n", cartao1.person);
+    printf("doing List:\n");
+    printTeste(doing);
     
     return 0;
 }

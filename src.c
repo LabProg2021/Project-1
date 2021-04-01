@@ -91,7 +91,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             if((*subs) != NULL && (*subs)->info->person[i] == card->person[i]) i++;
             else break;
         }
-    } else if(list->flag == 3) {                          //se for a lista done, ordenar pela data de conclusão
+    } else if(list->flag == 3) {      //se for a lista done, ordenar pela data de conclusão
         while((*subs) != NULL && (*subs)->info->concluDate.year > card->concluDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
@@ -104,7 +104,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    } else{
+    } else {                          //se dor a lista person, ordenar pela data de criação
          while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
@@ -120,24 +120,27 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
     } 
 }
 
-void moveToList(List listO, List listD, int id) {
+void moveToList(List listO, List listD, Card* card) {
     List temp = listO -> next;
 
-    while((temp) != NULL && temp->info->id != id) {
+    while((temp) != NULL && temp->info->id != card->id) {
         temp = temp -> next;
     }
-    /*if((temp) != NULL && temp->info.id != id) {
-        temp = NULL; //elemento não encontrado
-    }*/
 
-    insertNode(listD, temp->info); //Insere elemento na lista de destino
-    deleteFromList(listO, id);     //Remove elemento da lista de origem
+    insertNode(listD, temp->info);  //Insere elemento na lista de destino
+    deleteFromList(listO, card);    //Remove elemento da lista de origem
 }
 
-void deleteFromList(List prev, int id) {
+void changePerson(List list, Card* card, char* newPerson) {
+    deleteFromList(list, card);
+    card->person = newPerson;
+    insertNode(list, card);
+}
+
+void deleteFromList(List prev, Card* card) {
     List subs = prev -> next;
 
-    while((subs) != NULL && subs->info->id != id) {
+    while((subs) != NULL && subs->info->id != card->id) {
         prev = subs;
         subs = subs -> next;
     }
@@ -193,18 +196,7 @@ void printByPerson(List toDo, List doing, List done, char* person) {
     deleteList(find);
 }
 
-void printTeste(List list) {
-    List printID = list -> next;
-    printf("ID: ");
-    while(printID) {
-        printf("%d ", printID->info->id);
-        printID = printID -> next;
-    }
-    printf("\n");
-    printf("\n");
-}
-
-void printDates(List toDo, List doing, List done) {
+void printByDate(List toDo, List doing, List done) {
     List dates = createList(4);
     ListNode temp = *(toDo);
     while((toDo->next) != NULL) {
@@ -217,7 +209,7 @@ void printDates(List toDo, List doing, List done) {
         insertNode(dates, doing->next->info);
         doing->next = doing->next->next;
      }
-    toDo->next = temp.next;
+    doing->next = temp.next;
     temp = *(done);
     while((done->next) != NULL) {
         insertNode(dates, done->next->info);
@@ -226,4 +218,15 @@ void printDates(List toDo, List doing, List done) {
     done->next = temp.next;    
     printTeste(dates);
     deleteList(dates);
+}
+
+void printTeste(List list) {
+    List printID = list -> next;
+    printf("ID: ");
+    while(printID) {
+        printf("%d ", printID->info->id);
+        printID = printID -> next;
+    }
+    printf("\n");
+    printf("\n");
 }
