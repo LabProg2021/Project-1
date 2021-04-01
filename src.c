@@ -163,21 +163,12 @@ void deleteList(List trash) {
 }
 
 void printByPerson(List toDo, List doing, List done, char* person) {
-    List find = createList(1);
-    ListNode temp = *(toDo);
+    List byPerson = createList(1);
 
-    while((toDo->next) != NULL) {
-        if(strcmp(toDo->next->info->person, person)==0) {
-            insertNode(find, toDo->next->info);
-        }
-        toDo->next = toDo->next->next;
-    }
-    toDo->next = temp.next;
-
-    temp = *(doing);
+    ListNode temp = *(doing);
     while((doing->next) != NULL) {
         if(strcmp(doing->next->info->person, person)==0) {
-            insertNode(find, doing->next->info);
+            insertNode(byPerson, doing->next->info);
         }
         doing->next = doing->next->next;
     }
@@ -186,14 +177,14 @@ void printByPerson(List toDo, List doing, List done, char* person) {
     temp = *(done);
     while((done->next) != NULL) {
         if(strcmp(done->next->info->person, person)==0) {
-            insertNode(find, done->next->info);
+            insertNode(byPerson, done->next->info);
         }
         done->next = done->next->next;
     }
     done->next = temp.next;
 
-    printTeste(find);
-    deleteList(find);
+    printTeste(byPerson);
+    deleteList(byPerson);
 }
 
 void printByDate(List toDo, List doing, List done) {

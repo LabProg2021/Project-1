@@ -14,9 +14,9 @@ int main(int argc, char const *argv[]) {
     Date date3 = createDate(2021, 3, 10);
     Date nullDate;
 
-    cartao0 = createCard("Teste 1", 1, "Pedro", &date1, &nullDate);
+    cartao0 = createCard("Teste 1", 10, "António", &date1, &nullDate);
     cartao1 = createCard("Teste 2", 5, "Manuel", &date2, &nullDate);
-    cartao2 = createCard("Teste 3", 10, "António", &date1, &nullDate);
+    cartao2 = createCard("Teste 3", 2, "Pedro", &date1, &nullDate);
     cartao3 = createCard("Teste 4", 5, "Abc", &date1, &nullDate);
     cartao4 = createCard("Teste 5", 5, "Pedro", &date3, &nullDate);
     cartaoDone1 = createCard("Important Task", 10, "Hugo", &date1, &date3);
@@ -42,14 +42,10 @@ int main(int argc, char const *argv[]) {
     printTeste(doing);
     printf("done List:\n");
     printTeste(done);
-    printf("Ordenado por pessoa: \n");
+    printf("Cartões byPerson: \n");
     printByPerson(toDo, doing, done, "Pedro");
-    printf("doing List:\n");
-    printTeste(doing);
-    printf("Ordenado por datas: \n");
+    printf("Listas byDates: \n");
     printByDate(toDo, doing, done);
-    printf("doing List:\n");
-    printTeste(doing);
     printf("toDo List:\n");
     printTeste(toDo);
     printf("done List:\n");
