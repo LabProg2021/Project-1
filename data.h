@@ -41,7 +41,7 @@ typedef struct lnode {
 Date createDate(short year, short month, short day);
 
 // Função para criar um cartão
-Card createCard(char* description, short priority, char* person, Date* deadline, Date* concluDate);
+Card* createCard(char* description, short priority);
 
 // Função para criar uma lista
 List createList(short f);
@@ -53,7 +53,7 @@ void deleteList(List trash);
 void insertNode(List list, Card* card);
 
 //Função que procura um cartão na lista
-void listSearch(List list, Card* card, List *prev, List *atual);
+void listSearch(List list, Card* card, List* prev, List* atual);
 
 // Função para mover os cartões entre listas
 void moveToList(List listO, List listD, Card* card);

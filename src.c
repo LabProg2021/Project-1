@@ -16,20 +16,22 @@ Date createDate(short year, short month, short day) {
     return newDate;
 }
 
-Card createCard(char* description, short priority, char* person, Date* deadline, Date* concluDate) {
-    Card newCard;
+Card* createCard(char* description, short priority) {
+    Card* newCard = (Card*)malloc(sizeof(Card));
 
     time_t t = time(NULL);
     struct tm time = *localtime(&t);
     Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday); //Cria data autal
+    Date nullDate = createDate(-1, -1, -1);
+    char* nullName = "";
 
-    newCard.id           = ID;
-    newCard.creationDate = curDate;
-    newCard.description  = description;
-    newCard.priority     = priority;
-    newCard.person       = person;
-    newCard.deadline     = *deadline;
-    newCard.concluDate   = *concluDate;
+    newCard->id           = ID;
+    newCard->creationDate = curDate;
+    newCard->description  = description;
+    newCard->priority     = priority;
+    newCard->person       = nullName;
+    newCard->deadline     = nullDate;
+    newCard->concluDate   = nullDate;
 
     ID++;
     return newCard;
@@ -81,7 +83,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    } else if(list->flag == 2) {      //se for a lista doing, ordenar pela pessoa responsável
+    } else if(list->flag == 2) {    //se for a lista doing, ordenar pela pessoa responsável
         int i = 0;
         while((*subs) != NULL && (*subs)->info->person[i] != '\0') {
             while((*subs) != NULL && (*subs)->info->person[i] < card->person[i]) {
@@ -91,7 +93,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             if((*subs) != NULL && (*subs)->info->person[i] == card->person[i]) i++;
             else break;
         }
-    } else if(list->flag == 3) {      //se for a lista done, ordenar pela data de conclusão
+    } else if(list->flag == 3) {    //se for a lista done, ordenar pela data de conclusão
         while((*subs) != NULL && (*subs)->info->concluDate.year > card->concluDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
@@ -104,8 +106,8 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    } else {                          //se dor a lista person, ordenar pela data de criação
-         while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
+    } else {                        //se dor a lista byPerson, ordenar pela data de criação
+        while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
@@ -149,7 +151,7 @@ void deleteFromList(List prev, Card* card) {
 
     prev -> next = subs -> next;
 
-    free(subs);               //Liberta a memória do elemento eliminado
+    free(subs);                //Liberta a memória do elemento eliminado
 }
 
 void deleteList(List trash) {
