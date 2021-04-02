@@ -1,8 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "data.h"
-#include "src.c"
+//#include "src.c"
+#include "menu.c"
 
+int main(int argc, char const *argv[]) {
+    List toDo = createList(1);
+    List doing = createList(2);
+    List done = createList(3);
+
+    int var = 1;
+    while(var == 1) {
+        var = homepage(toDo, doing, done);
+    }
+
+    return 0;
+}
+
+/*
 int main(int argc, char const *argv[]) {
     Card *cartao0, *cartao1, *cartao2, *cartao3, *cartao4, *cartaoDone1, *cartaoDone2, *cartaoDone3;
     List toDo = createList(1);
@@ -60,3 +75,4 @@ int main(int argc, char const *argv[]) {
     saveFile(toDo, doing, done);
     return 0;
 }
+*/

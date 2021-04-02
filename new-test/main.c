@@ -95,6 +95,19 @@ int main(int argc, char *argv[]) {
     List doing = createList(2);
     List done = createList(3);
 
+
+    newCard->id           = ID;
+    newCard->creationDate = curDate;
+    newCard->description  = description;
+    newCard->priority     = priority;
+    newCard->person       = nullName;
+    newCard->deadline     = nullDate;
+    newCard->concluDate   = nullDate;
+
+
+
+
+
     printf("1. Inserir nova tarefa \n");
     printf("2. Editar tarefas \n"); // Encontrar novo nome
     printf("3. Visualizar tarefas \n");

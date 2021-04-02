@@ -4,7 +4,7 @@
 #include <string.h>
 #include "data.h"
 
-int ID = 0;
+int ID = 1;
 
 Date createDate(short year, short month, short day) {
     Date newDate;
@@ -164,26 +164,18 @@ void deleteList(List trash) {
     }
 }
 
-void printByPerson(List toDo, List doing, List done, char* person) {
+void printByPerson(List list, char* person) {
     List byPerson = createList(1);
+    ListNode temp = *(list);
 
-    ListNode temp = *(doing);
-    while((doing->next) != NULL) {
-        if(strcmp(doing->next->info->person, person)==0) {
-            insertNode(byPerson, doing->next->info);
+    while((list->next) != NULL) {
+        if(strcmp(list->next->info->person, person) == 0) {
+            insertNode(byPerson, list->next->info);
         }
-        doing->next = doing->next->next;
+        list->next = list->next->next;
     }
-    doing->next = temp.next;
 
-    temp = *(done);
-    while((done->next) != NULL) {
-        if(strcmp(done->next->info->person, person)==0) {
-            insertNode(byPerson, done->next->info);
-        }
-        done->next = done->next->next;
-    }
-    done->next = temp.next;
+    list->next = temp.next;
 
     printTeste(byPerson);
     deleteList(byPerson);
@@ -214,11 +206,18 @@ void printByDate(List toDo, List doing, List done) {
 }
 
 void printTeste(List list) {
-    List printID = list -> next;
-    printf("ID: ");
-    while(printID) {
-        printf("%d ", printID->info->id);
-        printID = printID -> next;
+    List printCard = list -> next;
+    while(printCard) {
+        printf("--------------------------------------- \n");
+        printf("ID: %d \n", printCard->info->id);
+        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+        printf("Descrição: %s \n", printCard->info->description);
+        printf("Prioridade: %hu \n", printCard->info->priority);
+        printf("Responsável: %s \n", printCard->info->person);
+        printf("Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
+        printf("Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+        printCard = printCard -> next;
+
     }
     printf("\n");
     printf("\n");
