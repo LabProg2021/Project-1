@@ -4,7 +4,7 @@
 #include <string.h>
 #include "data.h"
 
-int ID = 0;
+int ID = 1;
 
 Date createDate(short year, short month, short day) {
     Date newDate;
@@ -22,15 +22,16 @@ Card* createCard(char* description, short priority) {
     time_t t = time(NULL);
     struct tm time = *localtime(&t);
     Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday); //Cria data autal
-    Date nulldate = createDate(-1, -1, -1);
+    Date nullDate = createDate(-1, -1, -1);
+    char* nullName = "";
 
     newCard->id           = ID;
     newCard->creationDate = curDate;
     newCard->description  = description;
     newCard->priority     = priority;
-    newCard->person       = NULL;
-    newCard->deadline     = nulldate;
-    newCard->concluDate   = nulldate;
+    newCard->person       = nullName;
+    newCard->deadline     = nullDate;
+    newCard->concluDate   = nullDate;
 
     ID++;
     return newCard;
@@ -82,7 +83,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    } else if(list->flag == 2) {      //se for a lista doing, ordenar pela pessoa responsável
+    } else if(list->flag == 2) {    //se for a lista doing, ordenar pela pessoa responsável
         int i = 0;
         while((*subs) != NULL && (*subs)->info->person[i] != '\0') {
             while((*subs) != NULL && (*subs)->info->person[i] < card->person[i]) {
@@ -92,7 +93,7 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             if((*subs) != NULL && (*subs)->info->person[i] == card->person[i]) i++;
             else break;
         }
-    } else if(list->flag == 3) {      //se for a lista done, ordenar pela data de conclusão
+    } else if(list->flag == 3) {    //se for a lista done, ordenar pela data de conclusão
         while((*subs) != NULL && (*subs)->info->concluDate.year > card->concluDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
@@ -105,8 +106,8 @@ void listSearch(List list, Card* card, List *prev, List *subs) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
-    } else {                          //se dor a lista person, ordenar pela data de criação
-         while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
+    } else {                        //se dor a lista byPerson, ordenar pela data de criação
+        while((*subs) != NULL && (*subs)->info->creationDate.year > card->creationDate.year) {
             *prev = *subs;
             *subs = (*subs)->next;
         }
@@ -150,7 +151,7 @@ void deleteFromList(List prev, Card* card) {
 
     prev -> next = subs -> next;
 
-    free(subs);               //Liberta a memória do elemento eliminado
+    free(subs);                //Liberta a memória do elemento eliminado
 }
 
 void deleteList(List trash) {
@@ -163,26 +164,18 @@ void deleteList(List trash) {
     }
 }
 
-void printByPerson(List toDo, List doing, List done, char* person) {
+void printByPerson(List list, char* person) {
     List byPerson = createList(1);
+    ListNode temp = *(list);
 
-    ListNode temp = *(doing);
-    while((doing->next) != NULL) {
-        if(strcmp(doing->next->info->person, person)==0) {
-            insertNode(byPerson, doing->next->info);
+    while((list->next) != NULL) {
+        if(strcmp(list->next->info->person, person) == 0) {
+            insertNode(byPerson, list->next->info);
         }
-        doing->next = doing->next->next;
+        list->next = list->next->next;
     }
-    doing->next = temp.next;
 
-    temp = *(done);
-    while((done->next) != NULL) {
-        if(strcmp(done->next->info->person, person)==0) {
-            insertNode(byPerson, done->next->info);
-        }
-        done->next = done->next->next;
-    }
-    done->next = temp.next;
+    list->next = temp.next;
 
     printTeste(byPerson);
     deleteList(byPerson);
@@ -213,12 +206,88 @@ void printByDate(List toDo, List doing, List done) {
 }
 
 void printTeste(List list) {
-    List printID = list -> next;
-    printf("ID: ");
-    while(printID) {
-        printf("%d ", printID->info->id);
-        printID = printID -> next;
+    List printCard = list -> next;
+    while(printCard) {
+        printf("--------------------------------------- \n");
+        printf("ID: %d \n", printCard->info->id);
+        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+        printf("Descrição: %s \n", printCard->info->description);
+        printf("Prioridade: %hu \n", printCard->info->priority);
+        printf("Responsável: %s \n", printCard->info->person);
+        printf("Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
+        printf("Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+        printCard = printCard -> next;
+
     }
     printf("\n");
     printf("\n");
+}
+/*
+void printMenuIndex(List list) {
+    List printCard = list->next;
+
+    int i = 1;
+
+    while(printCard) {
+        printf("%d. ", i);
+        printf("ID da tarefa: %d \n", printCard->info->id);
+        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+        printf("Descrição: %s \n", printCard->info->description);
+        printf("Prioridade: %hu \n", printCard->info->priority);
+        printf("\n");
+        i++;
+        printCard = printCard -> next;
+    }
+}
+*/
+void saveFile(List toDo, List doing, List done) {
+    FILE *fp;
+    fp = fopen("cartoes.txt", "wb");
+    if(fp==NULL) {printf("Ficheiro não encontrado\n");
+    }
+    else {
+        ListNode temp = *(toDo);
+        while(toDo->next != NULL) {
+            fprintf(fp, "%d\n", toDo->next->info->id);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->creationDate.day,toDo->next->info->creationDate.month, toDo->next->info->creationDate.year);
+            fprintf(fp, "%s\n", toDo->next->info->description);
+            fprintf(fp, "%d\n", toDo->next->info->priority);
+            fprintf(fp, "%s\n", toDo->next->info->person);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->deadline.day,toDo->next->info->deadline.month, toDo->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", toDo->next->info->concluDate.day,toDo->next->info->concluDate.month, toDo->next->info->concluDate.year);
+            fprintf(fp, "%d\n", toDo->flag);
+            fprintf(fp, "\n");
+            toDo->next = toDo->next->next;
+        }
+        toDo->next = temp.next;
+        temp = *(doing);
+        while(doing->next != NULL) {
+            fprintf(fp, "%d\n", doing->next->info->id);
+            fprintf(fp, "%d %d %d\n", doing->next->info->creationDate.day,doing->next->info->creationDate.month, doing->next->info->creationDate.year);
+            fprintf(fp, "%s\n", doing->next->info->description);
+            fprintf(fp, "%d\n", doing->next->info->priority);
+            fprintf(fp, "%s\n", doing->next->info->person);
+            fprintf(fp, "%d %d %d\n", doing->next->info->deadline.day, doing->next->info->deadline.month, doing->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", doing->next->info->concluDate.day,doing->next->info->concluDate.month, doing->next->info->concluDate.year);
+            fprintf(fp, "%d\n", doing->flag);
+            fprintf(fp, "\n");
+            doing->next = doing->next->next;
+        }
+        doing->next = temp.next;
+        temp = *(done);
+        while(done->next != NULL) {
+            fprintf(fp, "%d\n", done->next->info->id);
+            fprintf(fp, "%d %d %d\n", done->next->info->creationDate.day, done->next->info->creationDate.month, done->next->info->creationDate.year);
+            fprintf(fp, "%s\n", done->next->info->description);
+            fprintf(fp, "%d\n", done->next->info->priority);
+            fprintf(fp, "%s\n", done->next->info->person);
+            fprintf(fp, "%d %d %d\n", done->next->info->deadline.day, done->next->info->deadline.month, done->next->info->deadline.year);
+            fprintf(fp, "%d %d %d\n", done->next->info->concluDate.day,done->next->info->concluDate.month, done->next->info->concluDate.year);
+            fprintf(fp, "%d\n", done->flag);
+            fprintf(fp, "\n");
+            done->next = done->next->next;
+        }
+        done->next = temp.next;
+    }
+    fclose(fp);
 }
