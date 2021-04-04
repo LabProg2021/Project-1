@@ -71,9 +71,7 @@ void printBoard(List toDo, List doing, List done);
 void printByCreation(List toDo, List doing, List done);
 
 //Função para visualizar tarefas de uma pessoa
-//void printByPerson(List toDo, List doing, List done, char* person);
 void printByPerson(List list, char* person);
-
 
 //Função para visualizar todas as tarefas por ordem de criação
 void printByDate(List toDo, List doing, List done);
@@ -81,11 +79,14 @@ void printByDate(List toDo, List doing, List done);
 //Função de teste para imprimir uma lista
 void printTeste(List list);
  
-//Função para guardar no ficheiro as alterações
+//Função para guardar alterações no ficheiro 
 void saveFile(List toDo, List doing, List done);
 
+//Função para ler dados do ficheiro
 void readFile(List toDo, List doing, List done);
 
+//Função para imprimir uma tarefa
+void printTask(List task);
 
 void insertMenu(List toDo);
 void editTask(List toDo, List doing, List done);

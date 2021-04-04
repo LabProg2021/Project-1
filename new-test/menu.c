@@ -50,11 +50,40 @@ void insertMenu(List toDo) {
     insertNode(toDo, createCard(description, priority));
 }
 
-void moveMenu(List toDo, List doing) {
+void moveMenu(List listO, List listD) {
+    List list = listO;
+    ListNode temp = *(list);
+    list = list->next;
+    int i = 1;
+    while(list) {
+        printf("%hd. ", i);
+        printTask(list);
+        list = list->next;
+        i++;
+    }
+    list = temp.next;
 
+    int choice;
+    printf("Selecione tarefa a mover: ");
+    scanf("%d", &choice);
+    
+    for(int i=1; i<choice; i++) {
+        list = list->next;
+    }
+
+    if(listO->flag == 1) {
+        char* newPerson = (char*) malloc (sizeof (char)*MAX_DESC);
+        printf("Atribua um responsável: ");
+        scanf("%s", newPerson);
+        changePerson(listO, list->info, newPerson);
+    } else if(listO->flag == 2) {
+        
+    } else {
+        
+    }
+
+    moveToList(listO, listD, list->info);
 }
-
-
 
 void editTask(List toDo, List doing, List done) {
     printf("1. Começar a executar a tarefa. \n");
@@ -69,11 +98,11 @@ void editTask(List toDo, List doing, List done) {
 
     switch(choice) {
         case 1:
-            moveMenu(List toDo, List doing);
+            moveMenu(toDo, doing);
             break;
         
         case 2:
-            moveMenu(List doing, List toDo);
+            moveMenu(doing, toDo);
             break;
 
         case 3:
@@ -130,7 +159,7 @@ void printInfo(List toDo, List doing, List done) {
     printf("1. Visualizar o quadro. \n");
     printf("2. Visualizar todas as tarefas de uma pessoa. \n");
     printf("3. Visualizar todas as tarefas ordenadas por data de criação. \n");
-    printf("0. Voltar ao menu inicial. \n")
+    printf("0. Voltar ao menu inicial. \n");
 
     int choice;
     scanf("%d", &choice);

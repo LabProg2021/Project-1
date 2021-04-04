@@ -217,11 +217,27 @@ void printTeste(List list) {
         printf("Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
         printf("Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
         printCard = printCard -> next;
-
     }
     printf("\n");
     printf("\n");
 }
+
+void printTask(List task) {
+    if(task->flag == 1) {
+        printf("%s ", task->info->description);
+        printf("(%hd) ", task->info->priority);
+        printf("   id_%d\n", task->info->id);
+    } else if(task->flag == 2) {
+        printf("%s ", task->info->description);
+        printf("'%s' ", task->info->person);
+        printf("   id_%d\n", task->info->id);
+    } else {
+        printf("%s ", task->info->description);
+        printf("(%hd_%hd_%hd) ", task->info->concluDate.day, task->info->concluDate.month, task->info->concluDate.year);
+        printf("   id_%d\n", task->info->id);
+    }
+}
+
 /*
 void printMenuIndex(List list) {
     List printCard = list->next;
