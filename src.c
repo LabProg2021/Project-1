@@ -5,6 +5,7 @@
 #include "data.h"
 
 int ID = 1;
+#define MAX_DESC 30
 
 Date createDate(short year, short month, short day) {
     Date newDate;
@@ -22,8 +23,8 @@ Card* createCard(char* description, short priority) {
     time_t t = time(NULL);
     struct tm time = *localtime(&t);
     Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday); //Cria data autal
-    Date nullDate = createDate(-1, -1, -1);
-    char* nullName = "";
+    Date nullDate = createDate(0, 0, 0);
+    char* nullName = "NAO DEFINIDO";
 
     newCard->id           = ID;
     newCard->creationDate = curDate;
@@ -231,46 +232,85 @@ void saveFile(List toDo, List doing, List done) {
     else {
         ListNode temp = *(toDo);
         while(toDo->next != NULL) {
+            fprintf(fp, "%s\n", toDo->next->info->description);
+            fprintf(fp, "%s\n", toDo->next->info->person);
             fprintf(fp, "%d\n", toDo->next->info->id);
             fprintf(fp, "%d %d %d\n", toDo->next->info->creationDate.day,toDo->next->info->creationDate.month, toDo->next->info->creationDate.year);
-            fprintf(fp, "%s\n", toDo->next->info->description);
             fprintf(fp, "%d\n", toDo->next->info->priority);
-            fprintf(fp, "%s\n", toDo->next->info->person);
             fprintf(fp, "%d %d %d\n", toDo->next->info->deadline.day,toDo->next->info->deadline.month, toDo->next->info->deadline.year);
             fprintf(fp, "%d %d %d\n", toDo->next->info->concluDate.day,toDo->next->info->concluDate.month, toDo->next->info->concluDate.year);
             fprintf(fp, "%d\n", toDo->flag);
-            fprintf(fp, "\n");
+            //fprintf(fp, "\n");
             toDo->next = toDo->next->next;
         }
         toDo->next = temp.next;
         temp = *(doing);
         while(doing->next != NULL) {
+            fprintf(fp, "%s\n", doing->next->info->description);
+            fprintf(fp, "%s\n", doing->next->info->person);
             fprintf(fp, "%d\n", doing->next->info->id);
             fprintf(fp, "%d %d %d\n", doing->next->info->creationDate.day,doing->next->info->creationDate.month, doing->next->info->creationDate.year);
-            fprintf(fp, "%s\n", doing->next->info->description);
             fprintf(fp, "%d\n", doing->next->info->priority);
-            fprintf(fp, "%s\n", doing->next->info->person);
             fprintf(fp, "%d %d %d\n", doing->next->info->deadline.day, doing->next->info->deadline.month, doing->next->info->deadline.year);
             fprintf(fp, "%d %d %d\n", doing->next->info->concluDate.day,doing->next->info->concluDate.month, doing->next->info->concluDate.year);
             fprintf(fp, "%d\n", doing->flag);
-            fprintf(fp, "\n");
+            //fprintf(fp, "\n");
             doing->next = doing->next->next;
         }
         doing->next = temp.next;
         temp = *(done);
         while(done->next != NULL) {
+            fprintf(fp, "%s\n", done->next->info->description);
+            fprintf(fp, "%s\n", done->next->info->person);
             fprintf(fp, "%d\n", done->next->info->id);
             fprintf(fp, "%d %d %d\n", done->next->info->creationDate.day, done->next->info->creationDate.month, done->next->info->creationDate.year);
-            fprintf(fp, "%s\n", done->next->info->description);
             fprintf(fp, "%d\n", done->next->info->priority);
-            fprintf(fp, "%s\n", done->next->info->person);
             fprintf(fp, "%d %d %d\n", done->next->info->deadline.day, done->next->info->deadline.month, done->next->info->deadline.year);
             fprintf(fp, "%d %d %d\n", done->next->info->concluDate.day,done->next->info->concluDate.month, done->next->info->concluDate.year);
-            fprintf(fp, "%d\n", done->flag);
-            fprintf(fp, "\n");
+            fprintf(fp, "%d\n", doing->flag);
+            //fprintf(fp, "\n");
             done->next = done->next->next;
         }
         done->next = temp.next;
     }
     fclose(fp);
 }
+
+void readFile(List toDo, List doing, List done) {
+    FILE *fp = fopen("cartoes.txt", "r+");
+    Card *temp = createCard(NULL, 0); //Criação do cartão para adicionar a lista
+    char *description = (char *)malloc(sizeof(char) * MAX_DESC); //Váriavel para guardar a descrição lida
+    char *person = (char *)malloc(sizeof(char) * MAX_DESC); // Váriavel para guardar a pessoa lida
+    while(!feof(fp)) {
+        int flag = 0;
+        fscanf(fp, "%[^\n]", description);
+        fgetc(fp);//Retirar o \n para permitir o próximo scan;
+        fscanf(fp, "%[^\n]", person);
+        fscanf(fp, "%d", &temp->id);
+        fscanf(fp, "%hd %hd %hd", &temp->creationDate.day, &temp->creationDate.month, &temp->creationDate.year);
+        fscanf(fp, "%hd", &temp->priority);
+        fscanf(fp, "%hd %hd %hd", &temp->deadline.day, &temp->deadline.month, &temp->deadline.year);
+        fscanf(fp, "%hd %hd %hd", &temp->concluDate.day, &temp->concluDate.month, &temp->concluDate.year);
+        fscanf(fp, "%d", &flag);
+        fgetc(fp);//Retirar o /n a seguir ao último parametro de cada cartão para permitir a leitura do próximo
+        temp->description = description;
+        temp->person = person;
+        if(flag == 1) {
+            insertNode(toDo, temp);
+        }
+        else if(flag == 2) {
+            insertNode(doing, temp);
+        }
+        else if(flag == 3) {
+            insertNode(done, temp);
+        }
+    }
+    printf("To Do :\n");
+    printTeste(toDo);
+    printf("Doing :\n");
+    printTeste(doing);
+    printf("Done :\n");
+    printTeste(done);
+}
+
+//NOTA: Neste programa mudei o parâmetro NULL NAME de " " para "NAO DEFIINIDO" ASSIM NA IMPRESSÃO IRÁ DIZER O QUE NOME DA PESSOA NÃO FOI DEFINIDO

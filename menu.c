@@ -151,26 +151,26 @@ void testMain() {
         //printf("toDo List:\n");
         //printTeste(toDo);
         //printf("doing List:\n");
-       // printTeste(doing);
+        // printTeste(doing);
         //printf("done List:\n");
-       // printTeste(done);
-        printf("Cartões byPerson: \n");
-        printByPerson(toDo, "Pedro");
-        printByPerson(doing, "Pedro");
-        printByPerson(done, "Pedro");
-        printf("Listas byDates: \n");
-        printByDate(toDo, doing, done);
-        printf("toDo List:\n");
-        printTeste(toDo);
-        printf("done List:\n");
-        printTeste(done);
-        printf("doing List:\n");
-        printTeste(doing);
-        printf("%s -> ", cartao1->person);
-        changePerson(doing, cartao1, "Ana");
-        printf("%s\n", cartao1->person);
-        printf("doing List:\n");
-        printTeste(doing);
+        // printTeste(done);
+        //printf("Cartões byPerson: \n");
+        //printByPerson(toDo, "Pedro");
+        //printByPerson(doing, "Pedro");
+        //printByPerson(done, "Pedro");
+        //printf("Listas byDates: \n");
+        //printByDate(toDo, doing, done);
+        //printf("toDo List:\n");
+        //printTeste(toDo);
+        //printf("done List:\n");
+        //printTeste(done);
+        //printf("doing List:\n");
+        //printTeste(doing);
+        //printf("%s -> ", cartao1->person);
+        //changePerson(doing, cartao1, "Ana");
+        //printf("%s\n", cartao1->person);
+        //printf("doing List:\n");
+        //printTeste(doing);
         saveFile(toDo, doing, done);
         changePerson(doing, cartao1, "Edgar");
         saveFile(toDo, doing, done);
@@ -181,9 +181,9 @@ int homepage (List toDo, List doing, List done) {
     printf("2. Editar tarefas \n");
     printf("3. Visualizar tarefas \n");
     printf("0. Sair \n");
-
+    readFile(toDo, doing, done);
     int choice;
-    scanf("%d", &choice);
+    scanf("%d\n", &choice);
     getchar();
 
     switch(choice) {
