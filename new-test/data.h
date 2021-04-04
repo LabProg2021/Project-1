@@ -53,7 +53,7 @@ void deleteList(List trash);
 void insertNode(List list, Card* card);
 
 //Função que procura um cartão na lista
-void listSearch(List list, Card* card, List *prev, List *atual);
+void listSearch(List list, Card* card, List* prev, List* atual);
 
 // Função para mover os cartões entre listas
 void moveToList(List listO, List listD, Card* card);
@@ -71,15 +71,24 @@ void printBoard(List toDo, List doing, List done);
 void printByCreation(List toDo, List doing, List done);
 
 //Função para visualizar tarefas de uma pessoa
-void printByPerson(List toDo, List doing, List done, char* person);
+//void printByPerson(List toDo, List doing, List done, char* person);
+void printByPerson(List list, char* person);
+
 
 //Função para visualizar todas as tarefas por ordem de criação
 void printByDate(List toDo, List doing, List done);
 
 //Função de teste para imprimir uma lista
 void printTeste(List list);
+ 
+//Função para guardar no ficheiro as alterações
+void saveFile(List toDo, List doing, List done);
+
+void readFile(List toDo, List doing, List done);
 
 
-
-void testInsert(List toDo);
+void insertMenu(List toDo);
+void editTask(List toDo, List doing, List done);
+void printInfo(List toDo, List doing, List done);
 void testMain();
+int homepage (List toDo, List doing, List done);
