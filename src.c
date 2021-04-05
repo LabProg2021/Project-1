@@ -242,7 +242,7 @@ void printTask(List task) {
 
 void saveFile(List toDo, List doing, List done) {
     FILE *fp;
-    int ret = remove("cartoes.txt");
+    remove("cartoes.txt");
     fp = fopen("cartoes.txt", "w+");
     if(fp==NULL) {printf("Ficheiro não encontrado\n");
     }
@@ -298,19 +298,25 @@ void readFile(List toDo, List doing, List done) {
     while(!feof(fp)) {
         int flag = 0;
         Card *temp = createCard(NULL, 0);
+        ID--;
         char *description = (char *)malloc(sizeof(char) * MAX_DESC); //Váriavel para guardar a descrição lida
         char *person = (char *)malloc(sizeof(char) * MAX_DESC);      // Váriavel para guardar a pessoa lida
         fscanf(fp, "%[^\n]", description);
         fgetc(fp); //Retirar o \n para permitir o próximo scan;
         fscanf(fp, "%[^\n]", person);
         fscanf(fp, "%d", &temp->id);
-        if(temp->id >= ID) ID = temp->id + 1; //atualiza o ID
+        //printf("A: %d\n", ID);
+        //printf("tmp: %d\n", temp->id);
+        //printf("%s\n", description);
+        //printf("%s\n", person);
+        if(temp->id >= ID) ID = (temp->id) + 1; //atualiza o ID
+        //printf("D: %d\n", ID);
         fscanf(fp, "%hd %hd %hd", &temp->creationDate.day, &temp->creationDate.month, &temp->creationDate.year);
         fscanf(fp, "%hd", &temp->priority);
         fscanf(fp, "%hd %hd %hd", &temp->deadline.day, &temp->deadline.month, &temp->deadline.year);
         fscanf(fp, "%hd %hd %hd", &temp->concluDate.day, &temp->concluDate.month, &temp->concluDate.year);
         fscanf(fp, "%d", &flag);
-        fgetc(fp);//Retirar o /n a seguir ao último parametro de cada cartão para permitir a leitura do próximo
+        fgetc(fp); //Retirar o /n a seguir ao último parametro de cada cartão para permitir a leitura do próximo
         temp->description = description;
         temp->person = person;
         if(flag == 1) {
@@ -323,6 +329,7 @@ void readFile(List toDo, List doing, List done) {
             insertNode(done, temp);
         }
     }
+    ID--;
     fseek(fp, 0, SEEK_SET);
     fclose(fp);
     /*printf("To Do :\n");
