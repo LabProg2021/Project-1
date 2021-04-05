@@ -6,7 +6,7 @@
 
 #define MAX_DESC 30
 
-int ID = 1;
+int ID = 0;
 
 Date createDate(short year, short month, short day) {
     Date newDate;
@@ -153,7 +153,7 @@ void deleteFromList(List prev, Card* card) {
 
     prev -> next = subs -> next;
 
-    free(subs);                //Liberta a memória do elemento eliminado
+    free(subs);                //Liberta a memória do nó eliminado
 }
 
 void deleteList(List trash) {
@@ -300,9 +300,10 @@ void readFile(List toDo, List doing, List done) {
     while(!feof(fp)) {
         int flag = 0;
         fscanf(fp, "%[^\n]", description);
-        fgetc(fp);//Retirar o \n para permitir o próximo scan;
+        fgetc(fp); //Retirar o \n para permitir o próximo scan;
         fscanf(fp, "%[^\n]", person);
         fscanf(fp, "%d", &temp->id);
+        if(temp->id >= ID) ID = temp->id + 1; //atualiza o ID
         fscanf(fp, "%hd %hd %hd", &temp->creationDate.day, &temp->creationDate.month, &temp->creationDate.year);
         fscanf(fp, "%hd", &temp->priority);
         fscanf(fp, "%hd %hd %hd", &temp->deadline.day, &temp->deadline.month, &temp->deadline.year);

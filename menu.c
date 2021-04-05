@@ -71,15 +71,30 @@ void moveMenu(List listO, List listD) {
         list = list->next;
     }
 
+    time_t t = time(NULL);
+    struct tm time = *localtime(&t);
+    Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+
     if(listO->flag == 1) {
         char* newPerson = (char*) malloc (sizeof (char)*MAX_DESC);
         printf("Atribua um responsável: ");
         scanf("%s", newPerson);
         changePerson(listO, list->info, newPerson);
+
+        printf("Atribua uma data limite de conclusão (dd mm aaaa): ");
+        scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
+        
+        //controlo de input
+        if(list->info->deadline.year < curDate.year) {
+            printf("Atribua uma data limite de conclusão válida (dd mm aaaa): ");
+            scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
+        } //INCOMPLETO
+
     } else if(listO->flag == 2) {
-        
+        //list->info->concluDate = curDate;
     } else {
-        
+        Date nullDate = createDate(0, 0, 0);
+        list->info->concluDate = nullDate;
     }
 
     moveToList(listO, listD, list->info);
@@ -267,7 +282,7 @@ int homepage (List toDo, List doing, List done) {
     printf("1. Inserir nova tarefa \n");
     printf("2. Editar tarefas \n");
     printf("3. Visualizar tarefas \n");
-    printf("0. Sair e guardar \n");
+    printf("0. Guardar e sair \n");
 
     int choice;
     scanf("%d", &choice);
