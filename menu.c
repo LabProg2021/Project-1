@@ -56,7 +56,7 @@ void moveMenu(List listO, List listD) {
     list = list->next;
     int i = 1;
     while(list) {
-        printf("%hd. ", i);
+        printf("%i. ", i);
         printTask(list);
         list = list->next;
         i++;

@@ -242,7 +242,8 @@ void printTask(List task) {
 
 void saveFile(List toDo, List doing, List done) {
     FILE *fp;
-    fp = fopen("cartoes.txt", "wb");
+    int ret = remove("cartoes.txt");
+    fp = fopen("cartoes.txt", "w+");
     if(fp==NULL) {printf("Ficheiro não encontrado\n");
     }
     else {
@@ -293,12 +294,12 @@ void saveFile(List toDo, List doing, List done) {
 }
 
 void readFile(List toDo, List doing, List done) {
-    FILE *fp = fopen("cartoes.txt", "r+");
-    Card *temp = createCard(NULL, 0); //Criação do cartão para adicionar a lista
-    char *description = (char *)malloc(sizeof(char) * MAX_DESC); //Váriavel para guardar a descrição lida
-    char *person = (char *)malloc(sizeof(char) * MAX_DESC); // Váriavel para guardar a pessoa lida
+    FILE *fp = fopen("cartoes.txt", "r+"); //Criação do cartão para adicionar a lista
     while(!feof(fp)) {
         int flag = 0;
+        Card *temp = createCard(NULL, 0);
+        char *description = (char *)malloc(sizeof(char) * MAX_DESC); //Váriavel para guardar a descrição lida
+        char *person = (char *)malloc(sizeof(char) * MAX_DESC);      // Váriavel para guardar a pessoa lida
         fscanf(fp, "%[^\n]", description);
         fgetc(fp); //Retirar o \n para permitir o próximo scan;
         fscanf(fp, "%[^\n]", person);
@@ -322,6 +323,8 @@ void readFile(List toDo, List doing, List done) {
             insertNode(done, temp);
         }
     }
+    fseek(fp, 0, SEEK_SET);
+    fclose(fp);
     /*printf("To Do :\n");
     printTeste(toDo);
     printf("Doing :\n");
