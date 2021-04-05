@@ -8,6 +8,9 @@ int main(int argc, char const *argv[]) {
     List toDo = createList(1);
     List doing = createList(2);
     List done = createList(3);
+
+    readFile(toDo, doing, done);
+
     int var = 1;
     while(var == 1) {
         var = homepage(toDo, doing, done);

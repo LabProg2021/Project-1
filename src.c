@@ -4,8 +4,9 @@
 #include <string.h>
 #include "data.h"
 
-int ID = 1;
 #define MAX_DESC 30
+
+int ID = 1;
 
 Date createDate(short year, short month, short day) {
     Date newDate;
@@ -24,7 +25,7 @@ Card* createCard(char* description, short priority) {
     struct tm time = *localtime(&t);
     Date curDate = createDate(time.tm_year + 1900, time.tm_mon + 1, time.tm_mday); //Cria data autal
     Date nullDate = createDate(0, 0, 0);
-    char* nullName = "NAO DEFINIDO";
+    char* nullName = "NULL";
 
     newCard->id           = ID;
     newCard->creationDate = curDate;
@@ -218,10 +219,25 @@ void printTeste(List list) {
         printf("Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
         printf("Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
         printCard = printCard -> next;
-
     }
     printf("\n");
     printf("\n");
+}
+
+void printTask(List task) {
+    if(task->flag == 1) {
+        printf("%s ", task->info->description);
+        printf("(%hd) ", task->info->priority);
+        printf("   id_%d\n", task->info->id);
+    } else if(task->flag == 2) {
+        printf("%s ", task->info->description);
+        printf("'%s' ", task->info->person);
+        printf("   id_%d\n", task->info->id);
+    } else {
+        printf("%s ", task->info->description);
+        printf("(%hd_%hd_%hd) ", task->info->concluDate.day, task->info->concluDate.month, task->info->concluDate.year);
+        printf("   id_%d\n", task->info->id);
+    }
 }
 
 void saveFile(List toDo, List doing, List done) {
@@ -305,12 +321,29 @@ void readFile(List toDo, List doing, List done) {
             insertNode(done, temp);
         }
     }
-    printf("To Do :\n");
+    /*printf("To Do :\n");
     printTeste(toDo);
     printf("Doing :\n");
     printTeste(doing);
     printf("Done :\n");
-    printTeste(done);
+    printTeste(done);*/
 }
 
-//NOTA: Neste programa mudei o parâmetro NULL NAME de " " para "NAO DEFIINIDO" ASSIM NA IMPRESSÃO IRÁ DIZER O QUE NOME DA PESSOA NÃO FOI DEFINIDO
+/*
+void printMenuIndex(List list) {
+    List printCard = list->next;
+
+    int i = 1;
+
+    while(printCard) {
+        printf("%d. ", i);
+        printf("ID da tarefa: %d \n", printCard->info->id);
+        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+        printf("Descrição: %s \n", printCard->info->description);
+        printf("Prioridade: %hu \n", printCard->info->priority);
+        printf("\n");
+        i++;
+        printCard = printCard -> next;
+    }
+}
+*/

@@ -48,11 +48,93 @@ void insertMenu(List toDo) {
     }
 
     insertNode(toDo, createCard(description, priority));
-    //printTeste(toDo);
-    // free(description);      // Problema neste free
 }
 
-void printPerson(List toDo, List doing, List done) {        // NÃO ESTÁ A DIVIDIR POR LISTAS!
+void moveMenu(List listO, List listD) {
+    List list = listO;
+    ListNode temp = *(list);
+    list = list->next;
+    int i = 1;
+    while(list) {
+        printf("%hd. ", i);
+        printTask(list);
+        list = list->next;
+        i++;
+    }
+    list = temp.next;
+
+    int choice;
+    printf("Selecione tarefa a mover: ");
+    scanf("%d", &choice);
+    
+    for(int i=1; i<choice; i++) {
+        list = list->next;
+    }
+
+    if(listO->flag == 1) {
+        char* newPerson = (char*) malloc (sizeof (char)*MAX_DESC);
+        printf("Atribua um responsável: ");
+        scanf("%s", newPerson);
+        changePerson(listO, list->info, newPerson);
+    } else if(listO->flag == 2) {
+        
+    } else {
+        
+    }
+
+    moveToList(listO, listD, list->info);
+}
+
+void editTask(List toDo, List doing, List done) {
+    printf("1. Começar a executar a tarefa. \n");
+    printf("2. Colocar a tarefa em pausa. \n");
+    printf("3. Alterar responsável pela tarefa. \n");
+    printf("4. Fechar a tarefa. \n");
+    printf("5. Reabrir tarefa. \n");
+    printf("0. Voltar ao menu inicial. \n");
+
+    int choice;
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+            printf("--------------------------\n");
+            moveMenu(toDo, doing);
+            break;
+        
+        case 2:
+            printf("--------------------------\n");
+            moveMenu(doing, toDo);
+            break;
+
+        case 3:
+            printf("--------------------------\n");
+
+            break;
+
+        case 4:
+            printf("--------------------------\n");
+
+            break;
+        
+        case 5:
+            printf("--------------------------\n");
+
+            break;
+        
+        case 0:
+            printf("--------------------------\n");
+            homepage(toDo, doing, done);
+            break;
+
+         default:
+            printf("Opção inválida, tente novamente.\n"); 
+            break;
+    }
+}
+
+
+void printPerson(List toDo, List doing, List done) {
     int loop = 0;
     char* personName = (char*) malloc (sizeof (char)*MAX_DESC);
     
@@ -77,19 +159,20 @@ void printPerson(List toDo, List doing, List done) {        // NÃO ESTÁ A DIVI
     printByPerson(doing, personName);
     printf("                    Tarefas concluídas: \n");
     printByPerson(done, personName);
-    //printByPerson(toDo, doing, done, personName);
 }
 
 void printInfo(List toDo, List doing, List done) {
     printf("1. Visualizar o quadro. \n");
     printf("2. Visualizar todas as tarefas de uma pessoa. \n");
     printf("3. Visualizar todas as tarefas ordenadas por data de criação. \n");
+    printf("0. Voltar ao menu inicial. \n");
 
     int choice;
     scanf("%d", &choice);
 
     switch(choice) {
         case 1:
+            printf("--------------------------\n");
             printf("                    Tarefas por fazer: \n");
             printTeste(toDo);
 
@@ -100,18 +183,22 @@ void printInfo(List toDo, List doing, List done) {
             break;
 
         case 2:
+            printf("--------------------------\n");
             printPerson(toDo, doing, done);
             break;
 
         case 3:
+            printf("--------------------------\n");
             printByDate(toDo, doing, done);
             break;
 
         case 0:
+            printf("--------------------------\n");
             homepage(toDo, doing, done);
             break;
         
         default:
+            printf("--------------------------\n");
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
@@ -151,26 +238,26 @@ void testMain() {
         //printf("toDo List:\n");
         //printTeste(toDo);
         //printf("doing List:\n");
-        // printTeste(doing);
+       // printTeste(doing);
         //printf("done List:\n");
-        // printTeste(done);
-        //printf("Cartões byPerson: \n");
-        //printByPerson(toDo, "Pedro");
-        //printByPerson(doing, "Pedro");
-        //printByPerson(done, "Pedro");
-        //printf("Listas byDates: \n");
-        //printByDate(toDo, doing, done);
-        //printf("toDo List:\n");
-        //printTeste(toDo);
-        //printf("done List:\n");
-        //printTeste(done);
-        //printf("doing List:\n");
-        //printTeste(doing);
-        //printf("%s -> ", cartao1->person);
-        //changePerson(doing, cartao1, "Ana");
-        //printf("%s\n", cartao1->person);
-        //printf("doing List:\n");
-        //printTeste(doing);
+       // printTeste(done);
+        printf("Cartões byPerson: \n");
+        printByPerson(toDo, "Pedro");
+        printByPerson(doing, "Pedro");
+        printByPerson(done, "Pedro");
+        printf("Listas byDates: \n");
+        printByDate(toDo, doing, done);
+        printf("toDo List:\n");
+        printTeste(toDo);
+        printf("done List:\n");
+        printTeste(done);
+        printf("doing List:\n");
+        printTeste(doing);
+        printf("%s -> ", cartao1->person);
+        changePerson(doing, cartao1, "Ana");
+        printf("%s\n", cartao1->person);
+        printf("doing List:\n");
+        printTeste(doing);
         saveFile(toDo, doing, done);
         changePerson(doing, cartao1, "Edgar");
         saveFile(toDo, doing, done);
@@ -180,32 +267,37 @@ int homepage (List toDo, List doing, List done) {
     printf("1. Inserir nova tarefa \n");
     printf("2. Editar tarefas \n");
     printf("3. Visualizar tarefas \n");
-    printf("0. Sair \n");
-    readFile(toDo, doing, done);
+    printf("0. Sair e guardar \n");
+
     int choice;
-    scanf("%d\n", &choice);
+    scanf("%d", &choice);
     getchar();
 
     switch(choice) {
         case 1:
+            printf("--------------------------\n");
             insertMenu(toDo);
             break;
 
-    case 2:
-        printPerson(toDo, doing, done);
+        case 2:
+            printf("--------------------------\n");
+            editTask(toDo, doing, done);
         break;
 
-    case 3:
-        printInfo(toDo, doing, done);
-        break;
+        case 3:
+            printf("--------------------------\n");
+            printInfo(toDo, doing, done);
+            break;
 
-    case 0:
-        testMain();
-        return 0;
+        case 0:
+            printf("--------------------------\n");
+            saveFile(toDo, doing, done);
+            //testMain();
+            return 0;
 
-    default:
-        printf("Opção inválida, tente novamente.\n"); 
-        break;
+        default:
+            printf("Opção inválida, tente novamente.\n"); 
+            break;
     }
 
     return 1;
