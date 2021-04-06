@@ -158,6 +158,7 @@ void editTask(List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
+    editTask(toDo, doing, done);
 }
 
 
@@ -229,6 +230,7 @@ void printInfo(List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
+    printInfo(toDo, doing, done);
 }
 
 void homepage (List toDo, List doing, List done) {
@@ -271,7 +273,11 @@ void homepage (List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
+<<<<<<< HEAD
 
     return;
+=======
+    homepage(toDo, doing, done);
+>>>>>>> parent of 6a5bca8... Resolução no ReadFile
 }
 

@@ -30,6 +30,16 @@ NULL
 0 0 0
 0 0 0
 1
+Ola
+NULL
+8
+6 4 2021
+5
+0 0 0
+0 0 0
+1
+<<<<<<< HEAD
+=======
 descricao
 NULL
 6
@@ -38,6 +48,7 @@ NULL
 0 0 0
 0 0 0
 1
+>>>>>>> parent of 6a5bca8... Resolução no ReadFile
 Task 2
 NULL
 3
