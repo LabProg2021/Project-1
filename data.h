@@ -64,21 +64,18 @@ void changePerson(List list, Card* card, char* newPerson);
 // Função para eliminar elemento de uma lista
 void deleteFromList(List list, Card* Card);
 
-// Função para visualizar o quadro
-void printBoard(List toDo, List doing, List done);
-
-// Função para visualizar tarefas por data de criação
-void printByCreation(List toDo, List doing, List done);
-
 //Função para visualizar tarefas de uma pessoa
 void printByPerson(List list, char* person);
 
 //Função para visualizar todas as tarefas por ordem de criação
 void printByDate(List toDo, List doing, List done);
 
-//Função de teste para imprimir uma lista
-void printTeste(List list);
- 
+//Função para imprimir uma lista
+void printList(List list);
+
+// Função que retorna o tamanho de uma lista
+int listSize(List list);
+
 //Função para guardar alterações no ficheiro 
 void saveFile(List toDo, List doing, List done);
 
@@ -89,6 +86,9 @@ void readFile(List toDo, List doing, List done);
 void printTask(List task);
 
 void insertMenu(List toDo);
+
 void editTask(List toDo, List doing, List done);
+
 void printInfo(List toDo, List doing, List done);
-int homepage (List toDo, List doing, List done);
+
+void homepage (List toDo, List doing, List done);

@@ -9,11 +9,9 @@ int main(int argc, char const *argv[]) {
     List done = createList(3);
 
     readFile(toDo, doing, done);
+    
+    homepage(toDo, doing, done);
 
-    int var = 1;
-    while(var == 1) {
-        var = homepage(toDo, doing, done);
-    }
 
     return 0;
 }

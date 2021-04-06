@@ -6,48 +6,35 @@
 #include "src.c"
 
 #define MAX_DESC 30
+#define MAX_TASK 20
 
 void insertMenu(List toDo) {
-    int loop = 0;
     char* description = (char*) calloc (MAX_DESC, sizeof (char));
-    
+
     printf("Introduza a descrição do cartao: \n");
     scanf("%[^\n]%*c", description);
 
-    // puts(description);
-
-    while(loop == 0) {
-        if(strcmp(description, "") == 0) {
-            printf("Não introduziu uma descricao. Por favor introduza uma descricao.\n");
-            getchar();
-            scanf("%[^\n]%*c", description);
-        }
-
-        else {
-            loop = 1;
-        }
+    while(strcmp(description, "") == 0) {
+        printf("Não introduziu uma descricao. Por favor introduza uma descricao.\n");
+        getchar();
+        scanf("%[^\n]%*c", description);
     }
 
-    loop = 0;
     short priority;
 
     printf("Introduza a prioridade do cartão entre 1 e 10: \n");
-    
     scanf("%hi", &priority);
 
-    while(loop == 0) {              // Este ciclo está a permitir a injeção de código (caso se introduza uma string)
-        if (priority < 1 || priority > 10) {
-            printf("Prioridade invalida, por favor introduza um numero entre 1 e 10 \n");
-            scanf("%hi", &priority);
-            continue;
-        }
-
-        else {
-            loop = 1;
-        }
+    // Este ciclo está a permitir a injeção de código (caso se introduza uma string)
+    while(priority < 1 || priority > 10) {
+        printf("Prioridade invalida, por favor introduza um numero entre 1 e 10 \n");
+        scanf("%hi", &priority);
+        continue;
     }
 
-    insertNode(toDo, createCard(description, priority));
+    if(listSize(toDo) < MAX_TASK) {
+        insertNode(toDo, createCard(description, priority));
+    }
 }
 
 void moveMenu(List listO, List listD) {
@@ -167,6 +154,7 @@ void editTask(List toDo, List doing, List done) {
             break;
 
          default:
+            printf("--------------------------\n");
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
@@ -213,12 +201,12 @@ void printInfo(List toDo, List doing, List done) {
         case 1:
             printf("--------------------------\n");
             printf("                    Tarefas por fazer: \n");
-            printTeste(toDo);
+            printList(toDo);
 
-            printf("                    Tarefas a serem feitas: \n");
-            printTeste(doing);
+            printf("                    Tarefas a serem feitas (%d/%d): \n", listSize(doing), MAX_TASK / 2);
+            printList(doing);
             printf("                    Tarefas concluídas: \n");
-            printTeste(done);
+            printList(done);
             break;
 
         case 2:
@@ -243,10 +231,11 @@ void printInfo(List toDo, List doing, List done) {
     }
 }
 
-int homepage (List toDo, List doing, List done) {
+void homepage (List toDo, List doing, List done) {
     printf("1. Inserir nova tarefa \n");
     printf("2. Editar tarefas \n");
     printf("3. Visualizar tarefas \n");
+    printf("9. Sair \n");
     printf("0. Guardar e sair \n");
 
     int choice;
@@ -269,16 +258,20 @@ int homepage (List toDo, List doing, List done) {
             printInfo(toDo, doing, done);
             break;
 
+        case 9:
+            printf("--------------------------\n");
+            return;
+
         case 0:
             printf("--------------------------\n");
             saveFile(toDo, doing, done);
-            return 0;
+            return;
 
         default:
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
 
-    return 1;
+    return;
 }
 

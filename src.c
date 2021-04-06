@@ -179,7 +179,7 @@ void printByPerson(List list, char* person) {
 
     list->next = temp.next;
 
-    printTeste(byPerson);
+    printList(byPerson);
     deleteList(byPerson);
 }
 
@@ -203,11 +203,22 @@ void printByDate(List toDo, List doing, List done) {
         done->next = done->next->next;
      }
     done->next = temp.next;    
-    printTeste(dates);
+    printList(dates);
     deleteList(dates);
 }
 
-void printTeste(List list) {
+int listSize(List list) {
+    List nextCard = list -> next;
+    int counter = 0;
+
+    while(nextCard) {
+        counter++;
+        nextCard = nextCard -> next;
+    }
+    return counter;
+}
+
+void printList(List list) {
     List printCard = list -> next;
     while(printCard) {
         printf("--------------------------------------- \n");
@@ -333,11 +344,11 @@ void readFile(List toDo, List doing, List done) {
     fseek(fp, 0, SEEK_SET);
     fclose(fp);
     /*printf("To Do :\n");
-    printTeste(toDo);
+    printList(toDo);
     printf("Doing :\n");
-    printTeste(doing);
+    printList(doing);
     printf("Done :\n");
-    printTeste(done);*/
+    printList(done);*/
 }
 
 /*
