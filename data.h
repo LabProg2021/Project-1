@@ -91,5 +91,4 @@ void printTask(List task);
 void insertMenu(List toDo);
 void editTask(List toDo, List doing, List done);
 void printInfo(List toDo, List doing, List done);
-void testMain();
 int homepage (List toDo, List doing, List done);

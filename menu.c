@@ -91,7 +91,7 @@ void moveMenu(List listO, List listD) {
         } //INCOMPLETO
 
     } else if(listO->flag == 2) {
-        //list->info->concluDate = curDate;
+        list->info->concluDate = curDate;
     } else {
         Date nullDate = createDate(0, 0, 0);
         list->info->concluDate = nullDate;
@@ -100,11 +100,35 @@ void moveMenu(List listO, List listD) {
     moveToList(listO, listD, list->info);
 }
 
+void changePersonMenu(List doing) {
+    List list = doing;
+    ListNode temp = *(list);
+    list = list->next;
+    int i = 1;
+    while(list) {
+        printf("%i. ", i);
+        printTask(list);
+        list = list->next;
+        i++;
+    }
+    list = temp.next;
+
+    int choice;
+    printf("Selecione tarefa onde quer alterar o responsável: ");
+    scanf("%d", &choice);
+
+    char* newPerson = (char*) malloc (sizeof (char)*MAX_DESC);
+
+    printf("Introduza o nome do novo responsável: ");
+    scanf("%s", newPerson);
+    changePerson(doing, list->info, newPerson);
+}
+
 void editTask(List toDo, List doing, List done) {
     printf("1. Começar a executar a tarefa. \n");
     printf("2. Colocar a tarefa em pausa. \n");
     printf("3. Alterar responsável pela tarefa. \n");
-    printf("4. Fechar a tarefa. \n");
+    printf("4. Concluir tarefa. \n");
     printf("5. Reabrir tarefa. \n");
     printf("0. Voltar ao menu inicial. \n");
 
@@ -124,17 +148,17 @@ void editTask(List toDo, List doing, List done) {
 
         case 3:
             printf("--------------------------\n");
-
+            changePersonMenu(doing);
             break;
 
         case 4:
             printf("--------------------------\n");
-
+            moveMenu(doing, done);
             break;
         
         case 5:
             printf("--------------------------\n");
-
+            moveMenu(done, toDo);
             break;
         
         case 0:
@@ -219,65 +243,6 @@ void printInfo(List toDo, List doing, List done) {
     }
 }
 
-void testMain() {
-    Card *cartao0, *cartao1, *cartao2, *cartao3, *cartao4, *cartaoDone1, *cartaoDone2, *cartaoDone3;
-        List toDo = createList(1);
-        List doing = createList(2);
-        List done = createList(3);
-
-        cartao0 = createCard("Teste 1", 10);
-        cartao1 = createCard("Teste 2", 5);
-        cartao2 = createCard("Teste 3", 2);
-        cartao3 = createCard("Teste 4", 5);
-        cartao4 = createCard("Teste 5", 5);
-        cartaoDone1 = createCard("Important Task", 10);
-        cartaoDone2 = createCard("Important Task", 7);
-        cartaoDone3 = createCard("Important Task", 8);
-
-        insertNode(toDo, cartao0);
-        insertNode(toDo, cartao1);
-        insertNode(toDo, cartao2);
-        insertNode(toDo, cartao3);
-        insertNode(toDo, cartao4);
-        //printf("toDo List:\n");
-        //printTeste(toDo);
-        changePerson(toDo, cartao1, "António");
-        changePerson(toDo, cartao2, "Pedro");
-        changePerson(toDo, cartao3, "Pedro");
-        moveToList(toDo, doing, cartao2);
-        moveToList(toDo, doing, cartao3);
-        moveToList(toDo, doing, cartao1);
-        insertNode(done, cartaoDone1);
-        insertNode(done, cartaoDone2);
-        insertNode(done, cartaoDone3);
-        //printf("toDo List:\n");
-        //printTeste(toDo);
-        //printf("doing List:\n");
-       // printTeste(doing);
-        //printf("done List:\n");
-       // printTeste(done);
-        printf("Cartões byPerson: \n");
-        printByPerson(toDo, "Pedro");
-        printByPerson(doing, "Pedro");
-        printByPerson(done, "Pedro");
-        printf("Listas byDates: \n");
-        printByDate(toDo, doing, done);
-        printf("toDo List:\n");
-        printTeste(toDo);
-        printf("done List:\n");
-        printTeste(done);
-        printf("doing List:\n");
-        printTeste(doing);
-        printf("%s -> ", cartao1->person);
-        changePerson(doing, cartao1, "Ana");
-        printf("%s\n", cartao1->person);
-        printf("doing List:\n");
-        printTeste(doing);
-        saveFile(toDo, doing, done);
-        changePerson(doing, cartao1, "Edgar");
-        saveFile(toDo, doing, done);
-}
-
 int homepage (List toDo, List doing, List done) {
     printf("1. Inserir nova tarefa \n");
     printf("2. Editar tarefas \n");
@@ -307,7 +272,6 @@ int homepage (List toDo, List doing, List done) {
         case 0:
             printf("--------------------------\n");
             saveFile(toDo, doing, done);
-            //testMain();
             return 0;
 
         default:
