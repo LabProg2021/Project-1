@@ -30,6 +30,14 @@ NULL
 0 0 0
 0 0 0
 1
+escricao
+NULL
+6
+6 4 2021
+5
+0 0 0
+0 0 0
+1
 Ola
 NULL
 8
@@ -38,30 +46,11 @@ NULL
 0 0 0
 0 0 0
 1
-<<<<<<< HEAD
-=======
-descricao
-NULL
-6
-6 4 2021
-5
-0 0 0
-0 0 0
-1
->>>>>>> parent of 6a5bca8... Resolução no ReadFile
-Task 2
-NULL
-3
-5 4 2021
-2
-0 0 0
-0 0 0
-1
-Teste 30
+este 30
 Luis
 7
 6 4 2021
 2
 10 10 2030
 6 4 2021
-2
+1

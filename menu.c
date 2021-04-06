@@ -35,6 +35,10 @@ void insertMenu(List toDo) {
     if(listSize(toDo) < MAX_TASK) {
         insertNode(toDo, createCard(description, priority));
     }
+
+    else {
+        printf("Não é possível adicionar mais tarefas por fazer. \n");
+    }
 }
 
 void moveMenu(List listO, List listD) {
@@ -150,7 +154,6 @@ void editTask(List toDo, List doing, List done) {
         
         case 0:
             printf("--------------------------\n");
-            homepage(toDo, doing, done);
             break;
 
          default:
@@ -158,7 +161,6 @@ void editTask(List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
-    editTask(toDo, doing, done);
 }
 
 
@@ -222,7 +224,6 @@ void printInfo(List toDo, List doing, List done) {
 
         case 0:
             printf("--------------------------\n");
-            homepage(toDo, doing, done);
             break;
         
         default:
@@ -230,7 +231,6 @@ void printInfo(List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
-    printInfo(toDo, doing, done);
 }
 
 void homepage (List toDo, List doing, List done) {
@@ -248,16 +248,19 @@ void homepage (List toDo, List doing, List done) {
         case 1:
             printf("--------------------------\n");
             insertMenu(toDo);
+            homepage(toDo, doing, done);
             break;
 
         case 2:
             printf("--------------------------\n");
             editTask(toDo, doing, done);
+            homepage(toDo, doing, done);
         break;
 
         case 3:
             printf("--------------------------\n");
             printInfo(toDo, doing, done);
+            homepage(toDo, doing, done);
             break;
 
         case 9:
@@ -273,11 +276,7 @@ void homepage (List toDo, List doing, List done) {
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
-<<<<<<< HEAD
 
     return;
-=======
-    homepage(toDo, doing, done);
->>>>>>> parent of 6a5bca8... Resolução no ReadFile
 }
 

@@ -149,11 +149,11 @@ void deleteFromList(List prev, Card* card) {
         subs = subs -> next;
     }
 
-    if(subs == NULL) return;   //Se o cartão não estiver na lista retorna NULL
+    if(subs == NULL) return;    //Se o cartão não estiver na lista retorna NULL
 
     prev -> next = subs -> next;
 
-    free(subs);                //Liberta a memória do nó eliminado
+    free(subs);                 //Liberta a memória do nó eliminado
 }
 
 void deleteList(List trash) {

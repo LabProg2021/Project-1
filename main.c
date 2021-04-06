@@ -3,14 +3,14 @@
 #include "data.h"
 #include "menu.c"
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const *argv[]) { 
     List toDo = createList(1);
     List doing = createList(2);
     List done = createList(3);
 
     readFile(toDo, doing, done);
-    
-    homepage(toDo, doing, done);
+
+    homepage(toDo, doing, done);    // menu
 
 
     return 0;

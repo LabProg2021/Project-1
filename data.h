@@ -85,6 +85,7 @@ void readFile(List toDo, List doing, List done);
 //Função para imprimir uma tarefa
 void printTask(List task);
 
+// Funções para gerir o menu
 void insertMenu(List toDo);
 
 void editTask(List toDo, List doing, List done);
