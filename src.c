@@ -284,7 +284,7 @@ void saveFile(List toDo, List doing, List done) {
             fprintf(fp, "%d\n", done->next->info->priority);
             fprintf(fp, "%d %d %d\n", done->next->info->deadline.day, done->next->info->deadline.month, done->next->info->deadline.year);
             fprintf(fp, "%d %d %d\n", done->next->info->concluDate.day,done->next->info->concluDate.month, done->next->info->concluDate.year);
-            fprintf(fp, "%d\n", doing->flag);
+            fprintf(fp, "%d\n", done->flag);
             //fprintf(fp, "\n");
             done->next = done->next->next;
         }
