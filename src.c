@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #include "data.h"
 
 #define MAX_DESC 30
@@ -49,6 +50,28 @@ List createList(short f) {
         aux -> flag = f;
     }
     return aux;
+}
+
+int compareDate(Date x, Date y) {
+    if(x.year > y.year) {
+        return 1;
+    } else if(x.year < y.year) {
+        return (-1);
+    } else {
+        if(x.month > y.month) {
+            return 1;
+        } else if(x.month < y.month) {
+            return (-1);
+        } else {
+            if(x.day > y.day) {
+                return 1;
+            } else if(x.day < y.day) {
+                return (-1);
+            } else {
+                return 0;
+            }
+        }
+    }
 }
 
 void insertNode(List list, Card* card) {
@@ -135,6 +158,17 @@ void moveToList(List listO, List listD, Card* card) {
     deleteFromList(listO, card);    //Remove elemento da lista de origem
 }
 
+int listSize(List list) {
+    List nextCard = list -> next;
+    int counter = 0;
+
+    while(nextCard) {
+        counter++;
+        nextCard = nextCard -> next;
+    }
+    return counter;
+}
+
 void changePerson(List list, Card* card, char* newPerson) {
     deleteFromList(list, card);
     card->person = newPerson;
@@ -207,17 +241,6 @@ void printByDate(List toDo, List doing, List done) {
     deleteList(dates);
 }
 
-int listSize(List list) {
-    List nextCard = list -> next;
-    int counter = 0;
-
-    while(nextCard) {
-        counter++;
-        nextCard = nextCard -> next;
-    }
-    return counter;
-}
-
 void printList(List list) {
     List printCard = list -> next;
     while(printCard) {
@@ -249,6 +272,17 @@ void printTask(List task) {
         printf("(%hd_%hd_%hd) ", task->info->concluDate.day, task->info->concluDate.month, task->info->concluDate.year);
         printf("   id_%d\n", task->info->id);
     }
+}
+
+void stringToUpper(char* s) {
+  char* aux;
+  aux = s;
+
+  while (*aux != '\0') {
+    *aux = toupper(*aux);
+    aux++;
+  }
+
 }
 
 void saveFile(List toDo, List doing, List done) {
@@ -341,7 +375,6 @@ void readFile(List toDo, List doing, List done) {
             insertNode(done, temp);
         }
     }
-    ID--;
     fseek(fp, 0, SEEK_SET);
     fclose(fp);
     /*printf("To Do :\n");
@@ -351,22 +384,3 @@ void readFile(List toDo, List doing, List done) {
     printf("Done :\n");
     printList(done);*/
 }
-
-/*
-void printMenuIndex(List list) {
-    List printCard = list->next;
-
-    int i = 1;
-
-    while(printCard) {
-        printf("%d. ", i);
-        printf("ID da tarefa: %d \n", printCard->info->id);
-        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
-        printf("Descrição: %s \n", printCard->info->description);
-        printf("Prioridade: %hu \n", printCard->info->priority);
-        printf("\n");
-        i++;
-        printCard = printCard -> next;
-    }
-}
-*/

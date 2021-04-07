@@ -12,6 +12,5 @@ int main(int argc, char const *argv[]) {
 
     homepage(toDo, doing, done);    // menu
 
-
     return 0;
 }

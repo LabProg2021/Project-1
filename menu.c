@@ -5,40 +5,60 @@
 #include "data.h"
 #include "src.c"
 
+#ifdef _WIN32
+#include <conio.h>
+#else
+#include <unistd.h>
+#define clrscr() printf("\e[1;1H\e[2J")
+#endif
+
 #define MAX_DESC 30
 #define MAX_TASK 20
 
 void insertMenu(List toDo) {
     char* description = (char*) calloc (MAX_DESC, sizeof (char));
 
-    printf("Introduza a descrição do cartao: \n");
+    printf("\n Indique um nome para a tarefa: \n");
+    printf(" > ");
     scanf("%[^\n]%*c", description);
 
     while(strcmp(description, "") == 0) {
-        printf("Não introduziu uma descricao. Por favor introduza uma descricao.\n");
+        printf(" Não introduziu um nome válido. Por favor tente novamente:\n");
+        printf(" > ");
         getchar();
         scanf("%[^\n]%*c", description);
     }
 
     short priority;
 
-    printf("Introduza a prioridade do cartão entre 1 e 10: \n");
-    scanf("%hi", &priority);
+    printf(" Introduza a prioridade do cartão, de 1 a 10: \n");
+    printf(" > ");
+    int control = scanf("%hi", &priority);
 
-    // Este ciclo está a permitir a injeção de código (caso se introduza uma string)
+    //controlo de input
+    while(control!=1) {
+        printf(" Prioridade invalida, por favor introduza um numero entre 1 e 10: \n");
+        printf(" > ");
+        getchar();
+        control = scanf("%hi", &priority);
+    }
     while(priority < 1 || priority > 10) {
-        printf("Prioridade invalida, por favor introduza um numero entre 1 e 10 \n");
+        printf(" Prioridade invalida, por favor introduza um numero entre 1 e 10: \n");
+        printf(" > ");
         scanf("%hi", &priority);
-        continue;
     }
 
     if(listSize(toDo) < MAX_TASK) {
+        stringToUpper(description);
         insertNode(toDo, createCard(description, priority));
+    } else {
+        printf(" Limite máximo de tarefas atingido. \n\n");
+        return;
     }
 
-    else {
-        printf("Não é possível adicionar mais tarefas por fazer. \n");
-    }
+    printf("\n Tarefa adicionada com sucesso.\n");
+    sleep(1.5);
+    clrscr();
 }
 
 void moveMenu(List listO, List listD) {
@@ -70,22 +90,34 @@ void moveMenu(List listO, List listD) {
         char* newPerson = (char*) malloc (sizeof (char)*MAX_DESC);
         printf("Atribua um responsável: ");
         scanf("%s", newPerson);
+        //stringToUpper(newPerson);
+        //CONTINUAR AQUI
         changePerson(listO, list->info, newPerson);
 
         printf("Atribua uma data limite de conclusão (dd mm aaaa): ");
-        scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
+        int control = scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
         
         //controlo de input
-        if(list->info->deadline.year < curDate.year) {
-            printf("Atribua uma data limite de conclusão válida (dd mm aaaa): ");
+        while(control!=3) {
+            printf("Indique uma data válida (dd mm aaaa): ");
+            getchar();
+            control = scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
+        }
+        while(compareDate(list->info->deadline, curDate) == (-1)) {
+            printf("Indique uma data válida (dd mm aaaa): ");
             scanf("%hd %hd %hd", &(list->info->deadline.day), &(list->info->deadline.month), &(list->info->deadline.year));
-        } //INCOMPLETO
+        }
 
     } else if(listO->flag == 2) {
-        list->info->concluDate = curDate;
+        if(listD->flag == 1) {
+            list->info->deadline = createDate(0, 0, 0);
+        } else {
+            list->info->concluDate = curDate;
+        }
     } else {
         Date nullDate = createDate(0, 0, 0);
         list->info->concluDate = nullDate;
+        list->info->deadline = nullDate;
     }
 
     moveToList(listO, listD, list->info);
@@ -116,48 +148,48 @@ void changePersonMenu(List doing) {
 }
 
 void editTask(List toDo, List doing, List done) {
-    printf("1. Começar a executar a tarefa. \n");
-    printf("2. Colocar a tarefa em pausa. \n");
-    printf("3. Alterar responsável pela tarefa. \n");
-    printf("4. Concluir tarefa. \n");
-    printf("5. Reabrir tarefa. \n");
-    printf("0. Voltar ao menu inicial. \n");
+    clrscr();
+    printf("--------------------------------\n");
+    printf("\033[0;32m");
+    printf("                   EDITAR TAREFA\n");
+    printf("\033[0m");
+    printf(" 1. Iniciar uma tarefa \n");
+    printf(" 2. Colocar uma tarefa em pausa \n");
+    printf(" 3. Alterar responsável duma \n    tarefa \n");
+    printf(" 4. Concluir tarefa \n");
+    printf(" 5. Reabrir tarefa \n");
+    printf(" 0. Voltar ao menu inicial \n");
+    printf("--------------------------------\n");
+    printf(" > ");
 
     int choice;
     scanf("%d", &choice);
 
     switch(choice) {
         case 1:
-            printf("--------------------------\n");
             moveMenu(toDo, doing);
             break;
         
         case 2:
-            printf("--------------------------\n");
             moveMenu(doing, toDo);
             break;
 
         case 3:
-            printf("--------------------------\n");
             changePersonMenu(doing);
             break;
 
         case 4:
-            printf("--------------------------\n");
             moveMenu(doing, done);
             break;
         
         case 5:
-            printf("--------------------------\n");
             moveMenu(done, toDo);
             break;
         
         case 0:
-            printf("--------------------------\n");
             break;
 
          default:
-            printf("--------------------------\n");
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
@@ -192,17 +224,23 @@ void printPerson(List toDo, List doing, List done) {
 }
 
 void printInfo(List toDo, List doing, List done) {
-    printf("1. Visualizar o quadro. \n");
-    printf("2. Visualizar todas as tarefas de uma pessoa. \n");
-    printf("3. Visualizar todas as tarefas ordenadas por data de criação. \n");
-    printf("0. Voltar ao menu inicial. \n");
+    clrscr();
+    printf("--------------------------------\n");
+    printf("\033[0;32m");
+    printf("              VIZUALIZAR TAREFAS\n");
+    printf("\033[0m");
+    printf(" 1. Visualizar quadro \n");
+    printf(" 2. Visualizar tarefas de uma \n    pessoa. \n");
+    printf(" 3. Visualizar tarefas por \n    data de criação \n");
+    printf(" 0. Voltar ao menu inicial \n");
+    printf("--------------------------------\n");
+    printf(" > ");
 
     int choice;
     scanf("%d", &choice);
 
     switch(choice) {
         case 1:
-            printf("--------------------------\n");
             printf("                    Tarefas por fazer: \n");
             printList(toDo);
 
@@ -210,35 +248,41 @@ void printInfo(List toDo, List doing, List done) {
             printList(doing);
             printf("                    Tarefas concluídas: \n");
             printList(done);
+            printf(" 0. Voltar ao menu inicial \n");
+            printf(" > ");
+            scanf("%d", &choice);
             break;
 
         case 2:
-            printf("--------------------------\n");
             printPerson(toDo, doing, done);
             break;
 
         case 3:
-            printf("--------------------------\n");
             printByDate(toDo, doing, done);
             break;
 
         case 0:
-            printf("--------------------------\n");
             break;
         
         default:
-            printf("--------------------------\n");
             printf("Opção inválida, tente novamente.\n"); 
             break;
     }
 }
 
 void homepage (List toDo, List doing, List done) {
-    printf("1. Inserir nova tarefa \n");
-    printf("2. Editar tarefas \n");
-    printf("3. Visualizar tarefas \n");
-    printf("9. Sair \n");
-    printf("0. Guardar e sair \n");
+    clrscr();
+    printf("--------------------------------\n");
+    printf("\033[0;32m");
+    printf("                  MENU PRINCIPAL\n");
+    printf("\033[0m");
+    printf(" 1. Adicionar nova tarefa \n");
+    printf(" 2. Editar tarefas \n");
+    printf(" 3. Visualizar tarefas \n");
+    printf(" 9. Sair \n");
+    printf(" 0. Guardar e sair \n");
+    printf("--------------------------------\n");
+    printf(" > ");
 
     int choice;
     scanf("%d", &choice);
@@ -246,29 +290,24 @@ void homepage (List toDo, List doing, List done) {
 
     switch(choice) {
         case 1:
-            printf("--------------------------\n");
             insertMenu(toDo);
             homepage(toDo, doing, done);
             break;
 
         case 2:
-            printf("--------------------------\n");
             editTask(toDo, doing, done);
             homepage(toDo, doing, done);
         break;
 
         case 3:
-            printf("--------------------------\n");
             printInfo(toDo, doing, done);
             homepage(toDo, doing, done);
             break;
 
         case 9:
-            printf("--------------------------\n");
             return;
 
         case 0:
-            printf("--------------------------\n");
             saveFile(toDo, doing, done);
             return;
 

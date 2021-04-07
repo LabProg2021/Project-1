@@ -49,6 +49,9 @@ List createList(short f);
 // Função para eliminar uma lista
 void deleteList(List trash);
 
+//Função que compara datas, retorna -1 se x<y, 0 se forem iguais e 1 se x>y
+int compareDate(Date x, Date y);
+
 // Funcão para inserir item ordenado
 void insertNode(List list, Card* card);
 
@@ -85,11 +88,11 @@ void readFile(List toDo, List doing, List done);
 //Função para imprimir uma tarefa
 void printTask(List task);
 
-// Funções para gerir o menu
+//Função que retorna uma string com todas as letras maiusculas
+void stringToUpper(char* s);
+
+//Funções para gerir o menu
 void insertMenu(List toDo);
-
 void editTask(List toDo, List doing, List done);
-
 void printInfo(List toDo, List doing, List done);
-
 void homepage (List toDo, List doing, List done);
