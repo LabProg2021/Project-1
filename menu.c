@@ -57,7 +57,7 @@ void insertMenu(List toDo) {
     }
 
     printf("\n Tarefa adicionada com sucesso.\n");
-    sleep(1.5);
+    sleep(1);
 }
 
 void moveMenu(List listO, List listD, int flag) {
@@ -143,7 +143,7 @@ void moveMenu(List listO, List listD, int flag) {
 
     moveToList(listO, listD, list->info);
     printf("\n Tarefa editada com sucesso.\n");
-    sleep(1.5);
+    sleep(1);
 }
 
 void changePersonMenu(List doing) {
@@ -180,7 +180,7 @@ void changePersonMenu(List doing) {
     changePerson(doing, list->info, newPerson);
 
     printf("\n Nome alterado com sucesso.\n");
-    sleep(1.5);
+    sleep(1);
 }
 
 void editTask(List toDo, List doing, List done) {
