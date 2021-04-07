@@ -201,7 +201,7 @@ void deleteList(List trash) {
 }
 
 void printByPerson(List list, char* person) {
-    List byPerson = createList(3);
+    List byPerson = createList(4);
     ListNode temp = *(list);
 
     while((list->next) != NULL) {
