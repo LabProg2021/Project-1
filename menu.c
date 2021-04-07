@@ -251,17 +251,19 @@ void editTask(List toDo, List doing, List done) {
 }
 
 
-void printPerson(List toDo, List doing, List done) {
+void printPerson(List toDo, List doing, List done, int choice) {
     int loop = 0;
     char* personName = (char*) malloc (sizeof (char)*MAX_DESC);
     
-    printf("Introduza o nome da pessoa: \n");
+    printf("\n Introduza o nome da pessoa: \n");
+    printf(" > ");
     getchar();
     scanf("%[^\n]%*c", personName);
 
     while(loop == 0) {
         if(strcmp(personName, "") == 0) {
-            printf("Não introduziu um nome. Por favor introduza um nome.\n");
+            printf("\n Não introduziu um nome. Por favor introduza um nome.\n");
+            printf(" > ");
             getchar();
             scanf("%[^\n]%*c", personName);
         }
@@ -270,12 +272,29 @@ void printPerson(List toDo, List doing, List done) {
             loop = 1;
         }
     }
-    printf("                    Tarefas por fazer: \n");
-    printByPerson(toDo, personName);
-    printf("                    Tarefas a serem feitas: \n");
+    stringToUpper(personName);
+
+    clrscr();
+    clrscr();
+    printf("--------------------------------\n");
+    printf("\033[0;32m");
+    printf(" Tarefas a serem feitas (%d/%d): \n", listSize(doing), MAX_TASK / 2);
+    printf("\033[0m");
     printByPerson(doing, personName);
-    printf("                    Tarefas concluídas: \n");
+    printf("--------------------------------\n");
+    printf("\033[0;32m");
+    printf("             Tarefas concluídas: \n");
+    printf("\033[0m");
     printByPerson(done, personName);
+    printf(" 0. Voltar ao menu inicial \n");
+    printf(" > ");
+    scanf("%d", &choice);
+    while(choice != 0) {
+        printf("\n Opção inválida, tente novamente.\n");
+        printf(" > ");
+        getchar();
+        scanf("%d", &choice);
+    }
 }
 
 void printInfo(List toDo, List doing, List done) {
@@ -325,11 +344,22 @@ void printInfo(List toDo, List doing, List done) {
             break;
 
         case 2:
-            printPerson(toDo, doing, done);
+            printPerson(toDo, doing, done, choice);
             break;
 
         case 3:
+            clrscr();
+            clrscr();
             printByDate(toDo, doing, done);
+            printf(" 0. Voltar ao menu inicial \n");
+            printf(" > ");
+            scanf("%d", &choice);
+            while(choice != 0) {
+                printf("\n Opção inválida, tente novamente.\n");
+                printf(" > ");
+                getchar();
+                scanf("%d", &choice);
+            }
             break;
 
         case 0:
@@ -352,6 +382,7 @@ void homepage (List toDo, List doing, List done) {
     printf(" 1. Adicionar nova tarefa \n");
     printf(" 2. Editar tarefas \n");
     printf(" 3. Visualizar tarefas \n");
+    printf(" 8. Guardar \n");
     printf(" 9. Sair \n");
     printf(" 0. Guardar e sair \n");
     printf("--------------------------------\n");
@@ -374,6 +405,13 @@ void homepage (List toDo, List doing, List done) {
 
         case 3:
             printInfo(toDo, doing, done);
+            homepage(toDo, doing, done);
+            break;
+
+        case 8:
+            saveFile(toDo, doing, done);
+            printf("\n Guardado com sucesso.\n");
+            sleep(1);
             homepage(toDo, doing, done);
             break;
 

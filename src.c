@@ -201,7 +201,7 @@ void deleteList(List trash) {
 }
 
 void printByPerson(List list, char* person) {
-    List byPerson = createList(1);
+    List byPerson = createList(3);
     ListNode temp = *(list);
 
     while((list->next) != NULL) {
@@ -213,7 +213,12 @@ void printByPerson(List list, char* person) {
 
     list->next = temp.next;
 
-    printList(byPerson);
+    if(listSize(byPerson) == 0 && list->flag == 3) {
+        printf("--------------------------------\n");
+        printf("\n Pessoa inexistente.\n\n");
+    } else {
+        printList(byPerson);
+    }
     deleteList(byPerson);
 }
 
@@ -236,8 +241,17 @@ void printByDate(List toDo, List doing, List done) {
         insertNode(dates, done->next->info);
         done->next = done->next->next;
      }
-    done->next = temp.next;    
-    printList(dates);
+    done->next = temp.next; 
+
+    if(listSize(dates) == 0) {
+        printf("--------------------------------\n");
+        printf("\n Não tem tarefas criadas.\n\n");
+    } else {
+        printf("\033[0;32m");
+        printf("     TAREFAS POR DATA DE CRIAÇAO\n");
+        printf("\033[0m");
+        printList(dates);
+    }
     deleteList(dates);
 }
 
@@ -258,7 +272,7 @@ void printList(List list) {
             printf(" Responsável: %s \n", printCard->info->person);
             printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
             printf(" Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
-        } else {
+        } else if(list->flag == 3) {
             printf("--------------------------------\n");
             printf(" ID: %d \n", printCard->info->id);
             printf(" Descrição: %s \n", printCard->info->description);
@@ -267,6 +281,23 @@ void printList(List list) {
             printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
             printf(" Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
             printf(" Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+        } else {
+            printf("--------------------------------\n");
+            printf(" ID: %d \n", printCard->info->id);
+            printf(" Descrição: %s \n", printCard->info->description);
+            printf(" Prioridade: %hu \n", printCard->info->priority);
+            if(strcmp(printCard->info->person, "NULL") != 0) {
+                printf(" Responsável: %s \n", printCard->info->person);
+            }
+            if(printCard->info->creationDate.day != 0) {
+                printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+            }
+            if(printCard->info->deadline.day != 0) {
+                printf(" Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
+            }
+            if(printCard->info->concluDate.day != 0) {
+                printf(" Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+            }
         }
         printCard = printCard -> next;
     }
