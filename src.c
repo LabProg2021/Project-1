@@ -244,33 +244,52 @@ void printByDate(List toDo, List doing, List done) {
 void printList(List list) {
     List printCard = list -> next;
     while(printCard) {
-        printf("--------------------------------------- \n");
-        printf("ID: %d \n", printCard->info->id);
-        printf("Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
-        printf("Descrição: %s \n", printCard->info->description);
-        printf("Prioridade: %hu \n", printCard->info->priority);
-        printf("Responsável: %s \n", printCard->info->person);
-        printf("Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
-        printf("Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+        if(list->flag == 1) {
+            printf("--------------------------------\n");
+            printf(" ID: %d \n", printCard->info->id);
+            printf(" Descrição: %s \n", printCard->info->description);
+            printf(" Prioridade: %hu \n", printCard->info->priority);
+            printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+        } else if(list->flag == 2) {
+            printf("--------------------------------\n");
+            printf(" ID: %d \n", printCard->info->id);
+            printf(" Descrição: %s \n", printCard->info->description);
+            printf(" Prioridade: %hu \n", printCard->info->priority);
+            printf(" Responsável: %s \n", printCard->info->person);
+            printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+            printf(" Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
+        } else {
+            printf("--------------------------------\n");
+            printf(" ID: %d \n", printCard->info->id);
+            printf(" Descrição: %s \n", printCard->info->description);
+            printf(" Prioridade: %hu \n", printCard->info->priority);
+            printf(" Responsável: %s \n", printCard->info->person);
+            printf(" Data de criação: %hu/%hu/%hu \n", printCard->info->creationDate.day, printCard->info->creationDate.month, printCard->info->creationDate.year);
+            printf(" Data Limite: %hu/%hu/%hu \n", printCard->info->deadline.day, printCard->info->deadline.month, printCard->info->deadline.year);
+            printf(" Data de conclusão: %hu/%hu/%hu \n", printCard->info->concluDate.day, printCard->info->concluDate.month, printCard->info->concluDate.year);
+        }
         printCard = printCard -> next;
     }
-    printf("\n");
+    printf("--------------------------------\n");
     printf("\n");
 }
 
 void printTask(List task) {
     if(task->flag == 1) {
-        printf("%s ", task->info->description);
-        printf("(%hd) ", task->info->priority);
-        printf("   id_%d\n", task->info->id);
+        printf("\033[1m");
+        printf("%s   ", task->info->description);
+        printf("\033[0m");
+        printf("(%hd)\n", task->info->priority);
     } else if(task->flag == 2) {
-        printf("%s ", task->info->description);
-        printf("'%s' ", task->info->person);
-        printf("   id_%d\n", task->info->id);
+        printf("\033[1m");
+        printf("%s   ", task->info->description);
+        printf("\033[0m");
+        printf("de:\"%s\"\n", task->info->person);
     } else {
-        printf("%s ", task->info->description);
-        printf("(%hd_%hd_%hd) ", task->info->concluDate.day, task->info->concluDate.month, task->info->concluDate.year);
-        printf("   id_%d\n", task->info->id);
+        printf("\033[1m");
+        printf("%s   ", task->info->description);
+        printf("\033[0m");
+        printf("(%hd_%hd_%hd)\n", task->info->concluDate.day, task->info->concluDate.month, task->info->concluDate.year);
     }
 }
 
