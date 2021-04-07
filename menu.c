@@ -84,9 +84,17 @@ void moveMenu(List listO, List listD, int flag) {
     printf("--------------------------------\n");
 
     int choice;
-    printf("\n Selecione tarefa: \n");
+    printf("\n Selecione uma tarefa: \n");
     printf(" > ");
-    scanf("%d", &choice);
+    int control = scanf("%d", &choice);
+
+    //controlo de input
+    while(control!=1 || choice < 1 || choice > listSize(listO)) {
+        printf("\n Index inválido. Selecione novamente: \n");
+        printf(" > ");
+        getchar();
+        control = scanf("%d", &choice);
+    }
     
     for(int i=1; i<choice; i++) {
         list = list->next;

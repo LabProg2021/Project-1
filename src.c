@@ -213,9 +213,16 @@ void printByPerson(List list, char* person) {
 
     list->next = temp.next;
 
-    if(listSize(byPerson) == 0 && list->flag == 3) {
+    if(listSize(byPerson) == 0) {
         printf("--------------------------------\n");
-        printf("\n Pessoa inexistente.\n\n");
+        char* aux;
+        if(list->flag == 2) {
+            aux = "a serem executadas.";
+        } else if(list->flag == 3) {
+            aux = "concluídas.";
+        }
+        printf(" %s não tem tarefas %s\n", person, aux);
+        printf("--------------------------------\n\n");
     } else {
         printList(byPerson);
     }
