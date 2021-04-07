@@ -218,7 +218,7 @@ void printByPerson(List list, char* person) {
         char* aux;
         if(list->flag == 2) {
             aux = "a serem executadas.";
-        } else if(list->flag == 3) {
+        } else {
             aux = "concluídas.";
         }
         printf(" %s não tem tarefas %s\n", person, aux);
