@@ -6,10 +6,13 @@
 #include "src.c"
 
 #ifdef _WIN32
-#include <conio.h>
+#include <windows.h>
+#define clrscr() system("cls")
+#define sleepf() Sleep(1000)
 #else
 #include <unistd.h>
 #define clrscr() printf("\e[1;1H\e[2J")
+#define sleepf() sleep(1)
 #endif
 
 #define MAX_DESC 30
@@ -57,7 +60,7 @@ void insertMenu(List toDo) {
     }
 
     printf("\n Tarefa adicionada com sucesso.\n");
-    sleep(1);
+    sleepf();
 }
 
 void moveMenu(List listO, List listD, int flag) {
@@ -143,7 +146,7 @@ void moveMenu(List listO, List listD, int flag) {
 
     moveToList(listO, listD, list->info);
     printf("\n Tarefa editada com sucesso.\n");
-    sleep(1);
+    sleepf();
 }
 
 void changePersonMenu(List doing) {
@@ -180,7 +183,7 @@ void changePersonMenu(List doing) {
     changePerson(doing, list->info, newPerson);
 
     printf("\n Nome alterado com sucesso.\n");
-    sleep(1);
+    sleepf();
 }
 
 void editTask(List toDo, List doing, List done) {
@@ -205,7 +208,7 @@ void editTask(List toDo, List doing, List done) {
         case 1:
             if(listSize(toDo) == 0) {
                 printf("\n Não existem tarefas por iniciar.\n");
-                sleep(1);
+                sleepf();
                 break;
             }
             moveMenu(toDo, doing, choice);
@@ -214,7 +217,7 @@ void editTask(List toDo, List doing, List done) {
         case 2:
             if(listSize(doing) == 0) {
                 printf("\n Não existem tarefas em execução.\n");
-                sleep(1);
+                sleepf();
                 break;
             }
             moveMenu(doing, toDo, choice);
@@ -223,7 +226,7 @@ void editTask(List toDo, List doing, List done) {
         case 3:
             if(listSize(doing) == 0) {
                 printf("\n Não existem tarefas em execução.\n");
-                sleep(1);
+                sleepf();
                 break;
             }
             changePersonMenu(doing);
@@ -232,7 +235,7 @@ void editTask(List toDo, List doing, List done) {
         case 4:
             if(listSize(doing) == 0) {
                 printf("\n Não existem tarefas em execução.\n");
-                sleep(1);
+                sleepf();
                 break;
             }
             moveMenu(doing, done, choice);
@@ -241,7 +244,7 @@ void editTask(List toDo, List doing, List done) {
         case 5:
             if(listSize(done) == 0) {
                 printf("\n Não existem tarefas concluídas.\n");
-                sleep(1);
+                sleepf();
                 break;
             }
             moveMenu(done, toDo, choice);
@@ -252,7 +255,7 @@ void editTask(List toDo, List doing, List done) {
 
          default:
             printf("\n Opção inválida, tente novamente.\n");
-            sleep(1);
+            sleepf();
             editTask(toDo, doing, done);
             break;
     }
@@ -375,7 +378,7 @@ void printInfo(List toDo, List doing, List done) {
         
         default:
             printf("\n Opção inválida, tente novamente.\n");
-            sleep(1);
+            sleepf();
             printInfo(toDo, doing, done);
             break;
     }
@@ -419,7 +422,7 @@ void homepage (List toDo, List doing, List done) {
         case 8:
             saveFile(toDo, doing, done);
             printf("\n Guardado com sucesso.\n");
-            sleep(1);
+            sleepf();
             homepage(toDo, doing, done);
             break;
 
@@ -432,7 +435,7 @@ void homepage (List toDo, List doing, List done) {
 
         default:
             printf("\n Opção inválida, tente novamente.\n");
-            sleep(1);
+            sleepf();
             homepage(toDo, doing, done);
             break;
     }
